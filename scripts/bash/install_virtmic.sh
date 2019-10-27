@@ -2,12 +2,15 @@
 
 # This script will create a virtual microphone for PulseAudio to use and set it as the default device.
 
+# Create a directory if not existing
+mkdir ~/.audiodesk/
+
 # Delete existing virtual microphone
 rm "~/.audiodesk/virtmic" -f
 
 # Get the current default devices
-DSRC=`python3 scripts/python/get_default_device.py sources`
-DSNK=`python3 scripts/python/get_default_device.py sinks`
+DSRC=`./scripts/python/get_default_device.py sources`
+DSNK=`./scripts/python/get_default_device.py sinks`
 
 echo "Default input: ${DSRC}"
 echo "Default output: ${DSNK}"

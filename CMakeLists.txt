@@ -1,20 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(Minesweeper)
+project(AudioDesk)
 
-include_directories("${PROJECT_BINARY_DIR}")
+find_package(PkgConfig)
 
-# Define sources and executable
-set(EXECUTABLE_NAME "minesweeper")
-add_executable(${EXECUTABLE_NAME} main.cpp)
+pkg_check_modules(GTKMM gtkmm-3.0)
 
-set(SFML_DIR "${CMAKE_SOURCE_DIR}/SFML/lib/cmake/SFML")
-
-find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
-if(SFML_FOUND)
-    target_link_libraries(${EXECUTABLE_NAME} sfml-graphics)
-endif()
-
-
-# Install target
-install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
+add_subdirectory(src)
