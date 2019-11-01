@@ -4,25 +4,29 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
+enum ConfType
+{
+    Loaded, New, FailedTemporary
+};
+
 class Setup
 {
 public:
     Setup();
 
-    bool cache_size = 0;
-    float volume = 1.0;
+    bool cache = false;
+    double volume = 1.0;
     int bitrate = 36000; 
     std::string default_device = NULL;
     std::string virtual_device = NULL;
 
-private:
-    enum ConfType
-    {
-        Loaded, Temporary
-    };
+    ConfType load_type = New;
 
-    ConfType check_directory();
+private:
+    ConfType check_directory(std::string fpath);
 
     int load_ini();
     int load_env();
-}
+
+    void create_conf();
+};
