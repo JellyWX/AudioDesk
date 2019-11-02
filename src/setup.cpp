@@ -1,9 +1,34 @@
-#include <fstream>
 #include "setup.hpp"
+
+std::string get_usable_path_for(std::string location)
+{
+    std::string home = getenv("HOME");
+    return home + "/.audiodesk/" + location;
+}
 
 Setup::Setup()
 {
-    this->load_type = this->check_directory("~/.audiodesk");
+    std::cout << "Entering setup now" << std::endl;
+
+    this->load_type = this->check_directory(get_usable_path_for(""));
+
+    switch (this->load_type)
+    {
+        case Loaded:
+            std::cout << "Setup already done (I hope). Attempting to load **now**!" << std::endl;
+            break;
+
+        case New:
+            std::cout << "New user! Creating a configuration file with default settings" << std::endl;
+            this->create_conf();
+            break;
+
+        case FailedTemporary:
+            std::cerr << "WARN: Something in setup failed. See above..." << std::endl;
+            break;
+    }
+
+    this->load_from_ini();
 }
 
 ConfType Setup::check_directory(std::string fpath)
@@ -12,38 +37,71 @@ ConfType Setup::check_directory(std::string fpath)
 
     if ( stat(fpath.c_str(), &info) != 0 )
     {
-        std::cerr << "Cannot access .audiodesk configuration folder" << std::endl;
-        return FailedTemporary;
+        std::cout << "Configuration folder not existing yet..." << std::endl;
+
+        if ( mkdir(fpath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0 )
+        {
+            std::cerr << "Failed to create a configuration folder:" <<
+            " errno " << errno << "; " << strerror(errno) << std::endl;
+            return FailedTemporary;
+        }
+        else
+        {
+            return New;
+        }
     }
     else if ( info.st_mode & S_IFDIR )
     {
         return Loaded;
     }
-    else if ( mkdir(fpath.c_str(), 0777) != 0 )
-    {
-        std::cerr << "Failed to create a configuration folder" << std::endl;
-        return FailedTemporary;
-    }
     else
     {
-        return New;
+        std::cerr << "Not a clue what's gone wrong here. Not going to load anything" << std::endl;
+        return FailedTemporary;
     }
 }
 
 void Setup::create_conf()
 {
-    std::ofstream conf_file;
+    this->conf_loader.add_entry("Device", "DEFAULT", "");
+    this->conf_loader.add_entry("Device", "VIRTUAL", "~/.audiodesk/virtmic");
 
-    conf_file.open("~/.audiodesk/audiodesk.ini");
+    this->conf_loader.add_entry("Stream", "VOLUME", "1.0");
+    this->conf_loader.add_entry("Stream", "BITRATE", "36000");
 
-    if (conf_file.is_open())
+    this->conf_loader.add_entry("Storage", "CACHE_ENABLED", "true");
+
+    FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
+
+    if (fstatus != WriteSuccess)
     {
-        conf_file << "" << std::endl;
+        std::cerr << "Failed to write configuration file. Goodbye." << std::endl;
+    }
+}
 
-        conf_file.close();
+void Setup::load_from_ini()
+{
+    FileLoadStatus fstatus = this->conf_loader.deserialize_from_file();
+    if (fstatus != Success)
+    {
+        switch (fstatus)
+        {
+            case IOError:
+                std::cerr << "IOError occured. This is unrecoverable. Goodbye." << std::endl;
+                break;
+
+            case ParseError:
+                std::cerr << "Parser error: failed to parse" << 
+                    "configuration file. See errors above." << std::endl <<
+                    "We are going to beat the file to death." << std::endl;
+                this->create_conf();
+                break;
+        }
     }
     else
     {
-        std::cerr << "Failed to open `audiodesk.ini` for writing" << std::endl;
+        this->VOLUME = std::stod(this->conf_loader.get_value("Stream", "VOLUME"));
+        this->BITRATE = std::stoi(this->conf_loader.get_value("Stream", "BITRATE"));
+        this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED") == "true";
     }
 }
