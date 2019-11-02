@@ -16,19 +16,20 @@ Setup::Setup()
     {
         case Loaded:
             std::cout << "Setup already done (I hope). Attempting to load **now**!" << std::endl;
+            this->load_from_ini();
+
             break;
 
         case New:
             std::cout << "New user! Creating a configuration file with default settings" << std::endl;
             this->create_conf();
+
             break;
 
         case FailedTemporary:
             std::cerr << "WARN: Something in setup failed. See above..." << std::endl;
             break;
     }
-
-    this->load_from_ini();
 }
 
 ConfType Setup::check_directory(std::string fpath)
@@ -103,5 +104,16 @@ void Setup::load_from_ini()
         this->VOLUME = std::stod(this->conf_loader.get_value("Stream", "VOLUME"));
         this->BITRATE = std::stoi(this->conf_loader.get_value("Stream", "BITRATE"));
         this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED") == "true";
+
+        std::string dd = this->conf_loader.get_value("Device", "DEFAULT");
+
+        if (dd )
+        {
+            this->DEFAULT_DEVICE = nullptr;
+        }
+        else
+        {
+            this->DEFAULT_DEVICE = dd;
+        }
     }
 }

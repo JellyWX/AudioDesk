@@ -9,6 +9,7 @@
 #include "ini.hpp"
 
 std::string get_usable_path_for(std::string location);
+bool device_exists(std::string name);
 
 enum ConfType
 {
@@ -28,6 +29,8 @@ public:
     int BITRATE = 36000;
 
     bool CACHE_ENABLED = true;
+
+    std::string DEFAULT_DEVICE = nullptr;
 
 private:
     ConfType check_directory(std::string fpath);
