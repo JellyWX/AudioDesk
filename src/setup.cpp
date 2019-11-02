@@ -38,17 +38,7 @@ void Setup::create_conf()
 
     if (conf_file.is_open())
     {
-        conf_file << "[Device]" <<
-"DEFAULT = " <<
-"VIRTUAL = \"~/.audiodesk/virtmic\"" <<
-
-"[Stream]" <<
-"VOLUME = 1" <<
-"BITRATE = 36000" <<
-
-"[Storage]" <<
-"SOURCES =" <<
-"CACHE = true" << std::endl;
+        conf_file << "" << std::endl;
 
         conf_file.close();
     }
