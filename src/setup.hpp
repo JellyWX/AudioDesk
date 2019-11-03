@@ -34,10 +34,10 @@ public:
 
     std::string DEFAULT_DEVICE = "";
 
+    void save_to_ini();
+
 private:
     ConfType check_directory(std::string fpath);
 
     void load_from_ini();
-
-    void save_to_ini();
 };
