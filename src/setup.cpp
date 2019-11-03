@@ -6,8 +6,10 @@ std::string get_usable_path_for(std::string location)
     return home + "/.audiodesk/" + location;
 }
 
-Setup::Setup()
+Setup::Setup(DeviceQuerier* d_query)
 {
+    this->device_querier = d_query;
+
     std::cout << "Entering setup now" << std::endl;
 
     this->load_type = this->check_directory(get_usable_path_for(""));
@@ -22,7 +24,7 @@ Setup::Setup()
 
         case New:
             std::cout << "New user! Creating a configuration file with default settings" << std::endl;
-            this->create_conf();
+            this->save_to_ini();
 
             break;
 
@@ -62,24 +64,6 @@ ConfType Setup::check_directory(std::string fpath)
     }
 }
 
-void Setup::create_conf()
-{
-    this->conf_loader.add_entry("Device", "DEFAULT", "");
-    this->conf_loader.add_entry("Device", "VIRTUAL", "~/.audiodesk/virtmic");
-
-    this->conf_loader.add_entry("Stream", "VOLUME", "1.0");
-    this->conf_loader.add_entry("Stream", "BITRATE", "36000");
-
-    this->conf_loader.add_entry("Storage", "CACHE_ENABLED", "true");
-
-    FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
-
-    if (fstatus != WriteSuccess)
-    {
-        std::cerr << "Failed to write configuration file. Goodbye." << std::endl;
-    }
-}
-
 void Setup::load_from_ini()
 {
     FileLoadStatus fstatus = this->conf_loader.deserialize_from_file();
@@ -95,7 +79,7 @@ void Setup::load_from_ini()
                 std::cerr << "Parser error: failed to parse" << 
                     "configuration file. See errors above." << std::endl <<
                     "We are going to beat the file to death." << std::endl;
-                this->create_conf();
+                this->save_to_ini();
                 break;
         }
     }
@@ -107,7 +91,7 @@ void Setup::load_from_ini()
 
         std::string dd = this->conf_loader.get_value("Device", "DEFAULT");
 
-        if (dd )
+        if (not this->device_querier->device_exists(dd))
         {
             this->DEFAULT_DEVICE = nullptr;
         }
@@ -115,5 +99,28 @@ void Setup::load_from_ini()
         {
             this->DEFAULT_DEVICE = dd;
         }
+    }
+}
+
+void Setup::save_to_ini()
+{
+    if (this->DEFAULT_DEVICE != nullptr)
+        this->conf_loader->add_entry("Device", "DEFAULT", this->DEFAULT_DEVICE);
+    else
+        this->conf_loader->add_entry("Device", "DEFAULT", "");
+
+    if (this->CACHE_ENABLED)
+        this->conf_loader->add_entry("Storage", "CACHE_ENABLED", "true");
+    else
+        this->conf_loader->add_entry("Storage", "CACHE_ENABLED", "false");
+
+    this->conf_loader->add_entry("Stream", "BITRATE", std::to_string(this->BITRATE));
+    this->conf_loader->add_entry("Stream", "VOLUME", std::to_string(this->VOLUME));
+
+    FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
+
+    if (fstatus != WriteSuccess)
+    {
+        std::cerr << "WARN: Failed to write configuration file." << std::endl;
     }
 }

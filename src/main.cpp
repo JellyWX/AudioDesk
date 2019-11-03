@@ -1,20 +1,28 @@
 #include <iostream>
 #include <gtkmm.h>
 #include "setup.hpp"
+#include "device_querier.hpp"
 
-struct stat info;
 
 int main(int argc, char **argv)
 {
-    Setup configuration = Setup();
+    DeviceQuerier d_query;
+
+    Setup configuration = Setup(&d_query);
 
     auto app = Gtk::Application::create(argc, argv, "com.jellywx.audiodesk");
 
-    auto setup_builder = Gtk::Builder::create_from_file("interfaces/setup.glade");
+    if (configuration.DEFAULT_DEVICE == nullptr)
+    {
+        auto setup_builder = Gtk::Builder::create_from_file("interfaces/setup.glade");
+    
+        Gtk::Window* setup;
 
-    Gtk::Window* setup;
+        setup_builder->get_widget("setup", setup);
 
-    setup_builder->get_widget("setup", setup);
+        app->run(*setup);
+    }
 
-    return app->run(*setup);
+
+    return 0;
 }

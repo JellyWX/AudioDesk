@@ -19,11 +19,13 @@ enum ConfType
 class Setup
 {
 public:
-    Setup();
+    Setup(DeviceQuerier* d_query);
 
     IniFile conf_loader = IniFile(get_usable_path_for("audiodesk.ini"), false);
 
     ConfType load_type = New;
+
+    DeviceQuerier* device_querier;
 
     double VOLUME = 1.0;
     int BITRATE = 36000;
@@ -37,5 +39,5 @@ private:
 
     void load_from_ini();
 
-    void create_conf();
+    void save_to_ini();
 };

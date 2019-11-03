@@ -182,9 +182,13 @@ void IniFile::add_entry(std::string section_name, std::string name, std::string 
         this->add_section(section_name);
         this->get_last_section()->add_entry(name, value);
     }
-    else
+    else if (section->get_entry(name) == nullptr)
     {
         section->add_entry(name, value);
+    }
+    else
+    {
+        section->get_entry(name)->set_value(value);
     }
 }
 
