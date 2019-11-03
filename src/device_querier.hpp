@@ -2,7 +2,8 @@
 
 #include <vector>
 #include <string>
-#include <pstreams.h>
+#include <regex>
+#include "pstream.h"
 
 
 class DeviceQuerier
@@ -16,4 +17,4 @@ public:
 
 private:
     void get_all_sources();
-}
+};

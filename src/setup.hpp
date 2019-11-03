@@ -7,9 +7,9 @@
 #include <fstream>
 #include <cerrno>
 #include "ini.hpp"
+#include "device_querier.hpp"
 
 std::string get_usable_path_for(std::string location);
-bool device_exists(std::string name);
 
 enum ConfType
 {
@@ -32,7 +32,7 @@ public:
 
     bool CACHE_ENABLED = true;
 
-    std::string DEFAULT_DEVICE = nullptr;
+    std::string DEFAULT_DEVICE = "";
 
 private:
     ConfType check_directory(std::string fpath);

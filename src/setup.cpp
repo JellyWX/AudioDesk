@@ -93,7 +93,7 @@ void Setup::load_from_ini()
 
         if (not this->device_querier->device_exists(dd))
         {
-            this->DEFAULT_DEVICE = nullptr;
+            this->DEFAULT_DEVICE = "";
         }
         else
         {
@@ -104,18 +104,18 @@ void Setup::load_from_ini()
 
 void Setup::save_to_ini()
 {
-    if (this->DEFAULT_DEVICE != nullptr)
-        this->conf_loader->add_entry("Device", "DEFAULT", this->DEFAULT_DEVICE);
+    if (this->DEFAULT_DEVICE != "")
+        this->conf_loader.add_entry("Device", "DEFAULT", this->DEFAULT_DEVICE);
     else
-        this->conf_loader->add_entry("Device", "DEFAULT", "");
+        this->conf_loader.add_entry("Device", "DEFAULT", "");
 
     if (this->CACHE_ENABLED)
-        this->conf_loader->add_entry("Storage", "CACHE_ENABLED", "true");
+        this->conf_loader.add_entry("Storage", "CACHE_ENABLED", "true");
     else
-        this->conf_loader->add_entry("Storage", "CACHE_ENABLED", "false");
+        this->conf_loader.add_entry("Storage", "CACHE_ENABLED", "false");
 
-    this->conf_loader->add_entry("Stream", "BITRATE", std::to_string(this->BITRATE));
-    this->conf_loader->add_entry("Stream", "VOLUME", std::to_string(this->VOLUME));
+    this->conf_loader.add_entry("Stream", "BITRATE", std::to_string(this->BITRATE));
+    this->conf_loader.add_entry("Stream", "VOLUME", std::to_string(this->VOLUME));
 
     FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
 
