@@ -9,17 +9,17 @@ void AudioDesk::run_setup()
 {
     std::cout << "Default device not set or not found. Loading setup screen." << std::endl;
 
-    current_builder = Gtk::Builder::create_from_file("interfaces/setup.glade");
+    this->current_builder->add_from_file("interfaces/setup.glade");
 
     Gtk::Window* setup;
 
-    current_builder->get_widget("setup", setup);
+    this->current_builder->get_widget("setup", setup);
 
     ModelColumns columns;
     auto input_devices = Gtk::ListStore::create(columns);
 
     Gtk::ComboBox* combobox;
-    current_builder->get_widget("combobox", combobox);
+    this->current_builder->get_widget("combobox", combobox);
     combobox->set_model(input_devices);
 
     for (std::string input_name : this->device_query.devices)
@@ -31,7 +31,7 @@ void AudioDesk::run_setup()
     }
 
     Gtk::Button* set_source;
-    current_builder->get_widget("new_vmic", set_source);
+    this->current_builder->get_widget("new_vmic", set_source);
 
     set_source->signal_clicked().connect(
         sigc::mem_fun(*this, &AudioDesk::set_audio_source)
@@ -42,7 +42,11 @@ void AudioDesk::run_setup()
 
 void AudioDesk::run_main()
 {
-    
+    this->current_builder->add_from_file("interfaces/main.glade");
+
+    Gtk::Window* main;
+    this->current_builder->get_widget("main", main);
+    this->app->run(*main);
 }
 
 void AudioDesk::set_audio_source()
@@ -55,7 +59,13 @@ void AudioDesk::set_audio_source()
     {
         this->configuration.DEFAULT_DEVICE = text;
         std::cout << "Default device has been set to " << text << std::endl;
-    }
+        
+        this->configuration.save_to_ini();
 
-    this->configuration.save_to_ini();
+        Gtk::Window* setup;
+        this->current_builder->get_widget("setup", setup);
+        setup->close();
+
+        this->run_main();
+    }
 }

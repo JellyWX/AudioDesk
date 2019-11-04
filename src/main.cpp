@@ -8,6 +8,10 @@ int main(int argc, char **argv)
     {
         app.run_setup();
     }
+    else
+    {
+        app.run_main();
+    }
 
     return 0;
 }

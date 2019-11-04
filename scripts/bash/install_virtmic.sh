@@ -2,9 +2,6 @@
 
 # This script will create a virtual microphone for PulseAudio to use and set it as the default device.
 
-# Create a directory if not existing
-mkdir ~/.audiodesk/
-
 # Delete existing virtual microphone
 rm "~/.audiodesk/virtmic" -f
 

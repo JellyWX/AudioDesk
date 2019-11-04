@@ -23,9 +23,11 @@ public:
 
     Setup configuration = Setup(&this->device_query);
 
-    Glib::RefPtr<Gtk::Builder> current_builder;
+    Glib::RefPtr<Gtk::Builder> current_builder = Gtk::Builder::create();
 
     void run_setup();
+
+    void run_main();
 
     void set_audio_source();
 };

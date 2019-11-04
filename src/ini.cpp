@@ -20,8 +20,6 @@ std::string IniSection::serialize()
         sstream << entry.serialize();
     }
 
-    sstream << std::endl;
-
     return sstream.str();
 }
 
