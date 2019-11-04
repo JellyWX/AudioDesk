@@ -1,16 +1,14 @@
+#pragma once
+
+#include "audiodesk.fwd.hpp"
+#include "setup_window.fwd.hpp"
+
 #include <gtkmm.h>
 #include "device_querier.hpp"
 #include "setup.hpp"
+#include "setup_window.hpp"
 
-class ModelColumns : public Gtk::TreeModel::ColumnRecord
-{
-public:
 
-    ModelColumns()
-    { add(m_col_name); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-};
 
 class AudioDesk
 {
@@ -21,13 +19,11 @@ public:
 
     DeviceQuerier device_query = DeviceQuerier();
 
-    Setup configuration = Setup(&this->device_query);
+    Setup setup = Setup(&this->device_query);
 
-    Glib::RefPtr<Gtk::Builder> current_builder = Gtk::Builder::create();
+    SetupWindow* setup_window;
 
     void run_setup();
 
     void run_main();
-
-    void set_audio_source();
 };
