@@ -5,10 +5,10 @@ SetupWindow::SetupWindow(
     const Glib::RefPtr<Gtk::Builder>& builder
     ) : Gtk::Window(object), builder(builder)
 {
-    this->add_available_devices();
-
     Gtk::Button* button;
     this->builder->get_widget("new_vmic", button);
+
+    this->builder->get_widget("comboentry", this->entry);
 
     button->signal_clicked().connect(
         sigc::mem_fun(*this, &SetupWindow::on_button_press)
@@ -17,7 +17,9 @@ SetupWindow::SetupWindow(
 
 void SetupWindow::set_application(AudioDesk* application)
 {
-    this->application = application;
+    this->audiodesk = application;
+
+    this->add_available_devices();
 }
 
 void SetupWindow::add_available_devices()
@@ -29,7 +31,7 @@ void SetupWindow::add_available_devices()
     this->builder->get_widget("combobox", combobox);
     combobox->set_model(input_devices);
 
-    for (std::string input_name : this->application->device_query.devices)
+    for (std::string input_name : this->audiodesk->device_query.devices)
     {
         std::cout << "Device available: " << input_name << std::endl;
         auto row = input_devices->append();
@@ -40,15 +42,17 @@ void SetupWindow::add_available_devices()
 
 void SetupWindow::on_button_press()
 {
-    Gtk::Entry* entry;
-    this->builder->get_widget("comboentry", entry);
-    std::string text = entry->get_text();
+    std::string text = this->entry->get_text();
+
+    std::cout << text << std::endl;
 
     if (text != "")
     {
-        this->application->setup.DEFAULT_DEVICE = text;
+        this->audiodesk->setup.DEFAULT_DEVICE = text;
         std::cout << "Default device has been set to " << text << std::endl;
         
-        this->application->setup.save_to_ini();
+        this->audiodesk->setup.save_to_ini();
+
+        this->audiodesk->switch_window(this->audiodesk->main_window);
     }
 }

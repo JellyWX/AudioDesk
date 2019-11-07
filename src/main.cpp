@@ -4,14 +4,10 @@ int main(int argc, char **argv)
 {
     AudioDesk app = AudioDesk(argc, argv, "com.jellywx.audiodesk");
 
-    if (app.setup.DEFAULT_DEVICE == "")
-    {
-        app.run_setup();
-    }
-    else
-    {
-        app.run_main();
-    }
+    for (std::string name : app.device_query.devices)
+        std::cout << "D:" << name << std::endl;
 
+    app.run();
+    
     return 0;
 }

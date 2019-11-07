@@ -7,7 +7,7 @@ DeviceQuerier::DeviceQuerier()
 
 void DeviceQuerier::get_all_sources()
 {
-    this->devices.empty();
+    std::cout << "Setting up device query" << std::endl;
 
     redi::ipstream in("pacmd list-sources");
     std::string line;
@@ -17,9 +17,11 @@ void DeviceQuerier::get_all_sources()
     {
         if (std::regex_search(line, match, std::regex("^\\s+name: <(.*)>")))
         {
+            std::cout << "Match: " << match.str(1) << std::endl;
+
             this->devices.push_back(match.str(1));
         }
-    }   
+    }
 }
 
 bool DeviceQuerier::device_exists(std::string name)

@@ -6,10 +6,13 @@ std::string get_usable_path_for(std::string location)
     return home + "/.audiodesk/" + location;
 }
 
-Setup::Setup(DeviceQuerier* d_query)
+Setup::Setup()
 {
-    this->device_querier = d_query;
 
+}
+
+void Setup::start(DeviceQuerier* d_query)
+{
     std::cout << "Entering setup now" << std::endl;
 
     this->load_type = this->check_directory(get_usable_path_for(""));
@@ -18,7 +21,7 @@ Setup::Setup(DeviceQuerier* d_query)
     {
         case Loaded:
             std::cout << "Setup already done (I hope). Attempting to load **now**!" << std::endl;
-            this->load_from_ini();
+            this->load_from_ini(d_query);
 
             break;
 
@@ -32,6 +35,7 @@ Setup::Setup(DeviceQuerier* d_query)
             std::cerr << "WARN: Something in setup failed. See above..." << std::endl;
             break;
     }
+
 }
 
 ConfType Setup::check_directory(std::string fpath)
@@ -64,7 +68,7 @@ ConfType Setup::check_directory(std::string fpath)
     }
 }
 
-void Setup::load_from_ini()
+void Setup::load_from_ini(DeviceQuerier* d_query)
 {
     FileLoadStatus fstatus = this->conf_loader.deserialize_from_file();
     if (fstatus != Success)
@@ -91,7 +95,7 @@ void Setup::load_from_ini()
 
         std::string dd = this->conf_loader.get_value("Device", "DEFAULT");
 
-        if (not this->device_querier->device_exists(dd))
+        if (not d_query->device_exists(dd))
         {
             this->DEFAULT_DEVICE = "";
         }

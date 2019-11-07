@@ -1,6 +1,6 @@
 #pragma once
 
-#include "setup_window.fwd.hpp"
+#include "windows.fwd.hpp"
 #include "audiodesk.fwd.hpp"
 
 #include <gtkmm.h>
@@ -32,7 +32,9 @@ public:
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
-    AudioDesk* application;
+    AudioDesk* audiodesk;
+
+    Gtk::Entry* entry;
 
     void add_available_devices();
 

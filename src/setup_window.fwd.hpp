@@ -1,2 +1,0 @@
-class ModelColumns;
-class SetupWindow;

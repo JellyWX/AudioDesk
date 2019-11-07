@@ -19,13 +19,13 @@ enum ConfType
 class Setup
 {
 public:
-    Setup(DeviceQuerier* d_query);
+    Setup();
+
+    void start(DeviceQuerier* d_query);
 
     IniFile conf_loader = IniFile(get_usable_path_for("audiodesk.ini"), false);
 
     ConfType load_type = New;
-
-    DeviceQuerier* device_querier;
 
     double VOLUME = 1.0;
     int BITRATE = 36000;
@@ -39,5 +39,5 @@ public:
 private:
     ConfType check_directory(std::string fpath);
 
-    void load_from_ini();
+    void load_from_ini(DeviceQuerier* d_query);
 };
