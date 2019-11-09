@@ -51,9 +51,8 @@ int AudioDesk::run()
 
 void AudioDesk::switch_window(Gtk::Window* window)
 {
-    std::cout << "Switching active window" << std::endl;
-
-    std::cout << "Removing existing window" << std::endl;
+    std::cout << "Switching active window" << std::endl
+              << "Removing existing window" << std::endl;
     this->app->hold();
 
     this->current_window->hide();

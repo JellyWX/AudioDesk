@@ -7,9 +7,8 @@
 #include <fstream>
 #include <cerrno>
 #include "ini.hpp"
+#include "utils.hpp"
 #include "device_querier.hpp"
-
-std::string get_usable_path_for(std::string location);
 
 enum ConfType
 {

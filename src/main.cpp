@@ -10,6 +10,6 @@ int main(int argc, char **argv)
     Gtk::StyleContext::add_provider_for_screen(Gdk::Screen::get_default(), css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     app.run();
-    
+
     return 0;
 }

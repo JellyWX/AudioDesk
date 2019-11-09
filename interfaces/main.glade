@@ -29,7 +29,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="sounds">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
@@ -70,6 +70,9 @@
                         </style>
                       </object>
                     </child>
+                    <style>
+                      <class name="button-play"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -97,6 +100,9 @@
                         </style>
                       </object>
                     </child>
+                    <style>
+                      <class name="button-demo"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -106,6 +112,9 @@
                     <property name="secondary">True</property>
                   </packing>
                 </child>
+                <style>
+                  <class name="row"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -150,6 +159,9 @@
                         </style>
                       </object>
                     </child>
+                    <style>
+                      <class name="button-play"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -177,6 +189,9 @@
                         </style>
                       </object>
                     </child>
+                    <style>
+                      <class name="button-demo"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -186,6 +201,9 @@
                     <property name="secondary">True</property>
                   </packing>
                 </child>
+                <style>
+                  <class name="row"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -230,6 +248,9 @@
                         </style>
                       </object>
                     </child>
+                    <style>
+                      <class name="button-play"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -257,6 +278,9 @@
                         </style>
                       </object>
                     </child>
+                    <style>
+                      <class name="button-demo"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -266,6 +290,9 @@
                     <property name="secondary">True</property>
                   </packing>
                 </child>
+                <style>
+                  <class name="row"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>

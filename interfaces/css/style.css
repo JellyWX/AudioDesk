@@ -1,3 +1,40 @@
 .button-text {
-    color: green;
+    color: white;
+}
+
+.row {
+    margin-top: 15px;
+}
+
+button {
+    margin-left: 2px;
+    margin-right: 2px;
+
+    border-style: solid;
+    border-radius: 4px;
+    border-image: none;
+
+    background-color: darkgrey;
+    background-image: none;
+
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0); 
+
+    transition: box-shadow 1s;
+}
+
+button:hover {
+    border-color: #2EE2E6;
+    box-shadow: 0px 0px 2px 1px rgba(101,170,230,1);
+}
+
+button:active * {
+    color: grey;
+}
+
+button:active {
+    box-shadow: 0px 0px 5px 1px rgba(101,170,230,1);
+}
+
+.button-play {
+    background-color: darkgrey;
 }

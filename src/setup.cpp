@@ -1,14 +1,7 @@
 #include "setup.hpp"
 
-std::string get_usable_path_for(std::string location)
-{
-    std::string home = getenv("HOME");
-    return home + "/.audiodesk/" + location;
-}
-
 Setup::Setup()
 {
-
 }
 
 void Setup::start(DeviceQuerier* d_query)
@@ -20,7 +13,7 @@ void Setup::start(DeviceQuerier* d_query)
     switch (this->load_type)
     {
         case Loaded:
-            std::cout << "Setup already done (I hope). Attempting to load **now**!" << std::endl;
+            std::cout << "Setup already done (I hope). Attempting to load now" << std::endl;
             this->load_from_ini(d_query);
 
             break;
