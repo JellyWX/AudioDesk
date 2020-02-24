@@ -1,5 +1,7 @@
 #include "ini.hpp"
 
+#include <utility>
+
 std::string IniEntry::serialize()
 {
     std::ostringstream sstream;
@@ -23,25 +25,25 @@ std::string IniSection::serialize()
     return sstream.str();
 }
 
-void IniSection::add_entry(IniEntry entry)
+void IniSection::add_entry(const IniEntry& entry)
 {
     this->entries.push_back(entry);
 }
 
-void IniSection::add_entry(std::string name, std::string value)
+void IniSection::add_entry(std::string new_name, std::string value)
 {
-    this->entries.push_back(IniEntry(name, value));
+    this->entries.emplace_back(IniEntry(std::move(new_name), std::move(value)));
 }
 
-IniEntry* IniSection::get_entry(std::string name)
+IniEntry* IniSection::get_entry(const std::string& looking_for)
 {
     for (
-        std::vector<IniEntry>::iterator it = this->entries.begin();
+        auto it = this->entries.begin();
         it != this->entries.end();
         ++it
         )
     {
-        if (it->name == name)
+        if (it->name == looking_for)
         {
             return &(*it);
         }
@@ -80,7 +82,7 @@ FileWriteStatus IniFile::serialize_to_file()
     }
 }
 
-IniFile::IniFile(std::string fpath, bool exists) : fpath(fpath)
+IniFile::IniFile(std::string fpath, bool exists) : fpath(std::move(fpath))
 {
     if (exists)
     {
@@ -133,12 +135,12 @@ FileLoadStatus IniFile::deserialize_from_file()
     }
 }
 
-LineLoadStatus IniFile::deserialize_line(std::string line)
+LineLoadStatus IniFile::deserialize_line(const std::string& line)
 {
     std::smatch match;
 
     // New section entered
-    if (std::regex_search(line, match, std::regex("\\[(\\w+)\\]")))
+    if (std::regex_search(line, match, std::regex(R"(\[(\w+)\])")))
     {
         std::string name = match.str(1);
 
@@ -149,7 +151,7 @@ LineLoadStatus IniFile::deserialize_line(std::string line)
         return LSuccess;
     }
     // Match config assignment
-    else if (std::regex_search(line, match, std::regex("([a-zA-Z_]+) = (.*)")) and this->sections.size() > 0)
+    else if (std::regex_search(line, match, std::regex("([a-zA-Z_]+) = (.*)")) and not this->sections.empty())
     {
         IniSection* current_operating_section = this->get_last_section();
 
@@ -172,7 +174,7 @@ LineLoadStatus IniFile::deserialize_line(std::string line)
     }
 }
 
-void IniFile::add_entry(std::string section_name, std::string name, std::string value)
+void IniFile::add_entry(const std::string& section_name, const std::string& name, const std::string& value)
 {
     IniSection* section = this->get_section(section_name);
     if (section == nullptr)
@@ -190,27 +192,27 @@ void IniFile::add_entry(std::string section_name, std::string name, std::string 
     }
 }
 
-void IniFile::add_section(IniSection section)
+void IniFile::add_section(const IniSection& section)
 {
     this->sections.push_back(section);
 }
 
 void IniFile::add_section(std::string name)
 {
-    this->sections.push_back(IniSection(name));
+    this->sections.emplace_back(IniSection(std::move(name)));
 }
 
-std::string IniFile::get_value(std::string section, std::string name)
+std::string IniFile::get_value(const std::string& section, const std::string& name)
 {
     return this->get_section(section)->get_entry(name)->get_value();
 }
 
-IniSection* IniFile::get_section(std::string name)
+IniSection* IniFile::get_section(const std::string& name)
 {
     for (
-        std::vector<IniSection>::iterator it = this->sections.begin();
+        auto it = this->sections.begin();
         it != this->sections.end();
-        ++it)
+            ++it)
     {
         if (it->name == name)
         {

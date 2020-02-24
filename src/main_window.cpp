@@ -5,10 +5,10 @@ MainWindow::MainWindow(
     const Glib::RefPtr<Gtk::Builder>& builder
     ) : Gtk::Window(object), builder(builder)
 {
-    
+    this->application = nullptr;
 }
 
-void MainWindow::set_application(AudioDesk* application)
+void MainWindow::set_application(AudioDesk* app)
 {
-    this->application = application;
+    this->application = app;
 }

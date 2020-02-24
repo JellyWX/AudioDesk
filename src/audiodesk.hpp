@@ -13,7 +13,7 @@
 class AudioDesk
 {
 public:
-    AudioDesk(int argc, char** argv, std::string name);
+    AudioDesk(int argc, char** argv, const std::string& name);
 
     Glib::RefPtr<Gtk::Application> app;
 

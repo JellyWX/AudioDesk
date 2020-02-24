@@ -1,7 +1,10 @@
 #include "audiodesk.hpp"
 
-AudioDesk::AudioDesk(int argc, char** argv, std::string name)
+AudioDesk::AudioDesk(int argc, char** argv, const std::string& name)
 {
+    this->setup_window = nullptr;
+    this->main_window = nullptr;
+
     this->setup.start(&this->device_query);
 
     this->app = Gtk::Application::create(argc, argv, name);
@@ -35,7 +38,7 @@ int AudioDesk::run()
 
     this->run_main();
 
-    if (this->setup.DEFAULT_DEVICE == "")
+    if (this->setup.DEFAULT_DEVICE.empty())
     {
         this->run_setup();
 

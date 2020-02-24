@@ -24,9 +24,9 @@ void DeviceQuerier::get_all_sources()
     }
 }
 
-bool DeviceQuerier::device_exists(std::string name)
+bool DeviceQuerier::device_exists(const std::string &name)
 {
-    for (std::string device : this->devices)
+    for (const std::string &device : this->devices)
     {
         if (device == name)
         {

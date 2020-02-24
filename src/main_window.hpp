@@ -16,7 +16,7 @@ public:
         const Glib::RefPtr<Gtk::Builder>& builder
     );
 
-    void set_application(AudioDesk* application);
+    void set_application(AudioDesk* app);
 
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
