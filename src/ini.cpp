@@ -74,11 +74,11 @@ FileWriteStatus IniFile::serialize_to_file()
     {
         file << this->serialize();
 
-        return WriteSuccess;
+        return FileWriteStatus::Success;
     }
     else
     {
-        return WriteIOError;
+        return FileWriteStatus::IOError;
     }
 }
 
@@ -90,11 +90,11 @@ IniFile::IniFile(std::string fpath, bool exists) : fpath(std::move(fpath))
 
         switch (l)
         {
-            case IOError:
+            case FileLoadStatus::IOError:
                 std::cerr << "Failed to open INI file" << std::endl;
                 break;
 
-            case ParseError:
+            case FileLoadStatus::ParseError:
                 std::cerr << "Failed to parse INI file" << std::endl;
                 break;
 
@@ -109,29 +109,29 @@ FileLoadStatus IniFile::deserialize_from_file()
     std::fstream file;
     std::string line;
 
-    LineLoadStatus lstatus = LSuccess;
+    LineLoadStatus lstatus = LineLoadStatus::Success;
 
     file.open(this->fpath, std::ios::in);
 
     if (file.is_open())
     {
-        while (getline(file, line) and lstatus == LSuccess)
+        while (getline(file, line) and lstatus == LineLoadStatus::Success)
         {
             lstatus = this->deserialize_line(line);
         }
 
-        if (lstatus == LSuccess)
+        if (lstatus == LineLoadStatus::Success)
         {
-            return Success;
+            return FileLoadStatus::Success;
         }
         else
         {
-            return ParseError;
+            return FileLoadStatus::ParseError;
         }
     }
     else
     {
-        return IOError;
+        return FileLoadStatus::IOError;
     }
 }
 
@@ -148,7 +148,7 @@ LineLoadStatus IniFile::deserialize_line(const std::string& line)
 
         this->add_section(section);
 
-        return LSuccess;
+        return LineLoadStatus::Success;
     }
     // Match config assignment
     else if (std::regex_search(line, match, std::regex("([a-zA-Z_]+) = (.*)")) and not this->sections.empty())
@@ -160,17 +160,17 @@ LineLoadStatus IniFile::deserialize_line(const std::string& line)
 
         current_operating_section->add_entry(IniEntry(entry_name, value));
 
-        return LSuccess;
+        return LineLoadStatus::Success;
     }
     // Match empty line
     else if (std::regex_match(line, std::regex("\\s*$")))
     {
-        return LSuccess;
+        return LineLoadStatus::Success;
     }
     else
     {
         std::cerr << "Parser error on `" << line << "`" << std::endl;
-        return LParseError;
+        return LineLoadStatus::ParseError;
     }
 }
 

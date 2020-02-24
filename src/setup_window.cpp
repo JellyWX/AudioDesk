@@ -5,6 +5,8 @@ SetupWindow::SetupWindow(
     const Glib::RefPtr<Gtk::Builder>& builder
     ) : Gtk::Window(object), builder(builder)
 {
+    this->audiodesk = nullptr;
+
     Gtk::Button* button;
     this->builder->get_widget("new_vmic", button);
 
@@ -31,7 +33,7 @@ void SetupWindow::add_available_devices()
     this->builder->get_widget("combobox", combobox);
     combobox->set_model(input_devices);
 
-    for (std::string input_name : this->audiodesk->device_query.devices)
+    for (const std::string& input_name : this->audiodesk->device_query.devices)
     {
         std::cout << "Device available: " << input_name << std::endl;
         auto row = input_devices->append();
@@ -46,7 +48,7 @@ void SetupWindow::on_button_press()
 
     std::cout << text << std::endl;
 
-    if (text != "")
+    if (not text.empty())
     {
         this->audiodesk->setup.DEFAULT_DEVICE = text;
         std::cout << "Default device has been set to " << text << std::endl;

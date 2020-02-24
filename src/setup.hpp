@@ -36,7 +36,7 @@ public:
     void save_to_ini();
 
 private:
-    ConfType check_directory(std::string fpath);
+    static ConfType check_directory(const std::string& fpath);
 
     void load_from_ini(DeviceQuerier* d_query);
 };

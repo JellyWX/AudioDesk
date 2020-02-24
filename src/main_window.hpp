@@ -21,5 +21,5 @@ public:
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
-    AudioDesk* application;
+    AudioDesk* audiodesk{};
 };

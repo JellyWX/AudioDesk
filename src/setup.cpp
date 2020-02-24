@@ -1,14 +1,13 @@
 #include "setup.hpp"
 
 Setup::Setup()
-{
-}
+= default;
 
 void Setup::start(DeviceQuerier* d_query)
 {
     std::cout << "Entering setup now" << std::endl;
 
-    this->load_type = this->check_directory(get_usable_path_for(""));
+    this->load_type = Setup::check_directory(get_usable_path_for(""));
 
     switch (this->load_type)
     {
@@ -31,9 +30,9 @@ void Setup::start(DeviceQuerier* d_query)
 
 }
 
-ConfType Setup::check_directory(std::string fpath)
+ConfType Setup::check_directory(const std::string& fpath)
 {
-    struct stat info;
+    struct stat info{};
 
     if ( stat(fpath.c_str(), &info) != 0 )
     {
@@ -64,44 +63,42 @@ ConfType Setup::check_directory(std::string fpath)
 void Setup::load_from_ini(DeviceQuerier* d_query)
 {
     FileLoadStatus fstatus = this->conf_loader.deserialize_from_file();
-    if (fstatus != Success)
+
+    switch (fstatus)
     {
-        switch (fstatus)
-        {
-            case IOError:
-                std::cerr << "IOError occured. This is unrecoverable. Goodbye." << std::endl;
-                break;
+        case FileLoadStatus::IOError:
+            std::cerr << "IOError occurred. This is unrecoverable. Goodbye." << std::endl;
+            break;
 
-            case ParseError:
-                std::cerr << "Parser error: failed to parse" << 
-                    "configuration file. See errors above." << std::endl <<
-                    "We are going to beat the file to death." << std::endl;
-                this->save_to_ini();
-                break;
-        }
-    }
-    else
-    {
-        this->VOLUME = std::stod(this->conf_loader.get_value("Stream", "VOLUME"));
-        this->BITRATE = std::stoi(this->conf_loader.get_value("Stream", "BITRATE"));
-        this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED") == "true";
+        case FileLoadStatus::ParseError:
+            std::cerr << "Parser error: failed to parse" <<
+                "configuration file. See errors above." << std::endl <<
+                "We are going to beat the file to death." << std::endl;
+            this->save_to_ini();
+            break;
 
-        std::string dd = this->conf_loader.get_value("Device", "DEFAULT");
+        case FileLoadStatus::Success:
+            this->VOLUME = std::stod(this->conf_loader.get_value("Stream", "VOLUME"));
+            this->BITRATE = std::stoi(this->conf_loader.get_value("Stream", "BITRATE"));
+            this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED") == "true";
 
-        if (not d_query->device_exists(dd))
-        {
-            this->DEFAULT_DEVICE = "";
-        }
-        else
-        {
-            this->DEFAULT_DEVICE = dd;
-        }
+            std::string dd = this->conf_loader.get_value("Device", "DEFAULT");
+
+            if (not d_query->device_exists(dd))
+            {
+                this->DEFAULT_DEVICE = "";
+            }
+            else
+            {
+                this->DEFAULT_DEVICE = dd;
+            }
+            break;
     }
 }
 
 void Setup::save_to_ini()
 {
-    if (this->DEFAULT_DEVICE != "")
+    if (not this->DEFAULT_DEVICE.empty())
         this->conf_loader.add_entry("Device", "DEFAULT", this->DEFAULT_DEVICE);
     else
         this->conf_loader.add_entry("Device", "DEFAULT", "");
@@ -116,7 +113,7 @@ void Setup::save_to_ini()
 
     FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
 
-    if (fstatus != WriteSuccess)
+    if (fstatus != FileWriteStatus::Success)
     {
         std::cerr << "WARN: Failed to write configuration file." << std::endl;
     }

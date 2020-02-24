@@ -32,9 +32,9 @@ public:
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
-    AudioDesk* audiodesk;
+    AudioDesk* audiodesk{};
 
-    Gtk::Entry* entry;
+    Gtk::Entry* entry{};
 
     void add_available_devices();
 

@@ -8,19 +8,19 @@
 #include <regex>
 #include <iostream>
 
-enum FileLoadStatus
+enum class FileLoadStatus
 {
     Success, ParseError, IOError,
 };
 
-enum LineLoadStatus
+enum class LineLoadStatus
 {
-    LSuccess, LParseError,
+    Success, ParseError,
 };
 
-enum FileWriteStatus
+enum class FileWriteStatus
 {
-    WriteIOError, WriteSuccess,
+    IOError, Success,
 };
 
 class IniEntry
