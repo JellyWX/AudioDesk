@@ -18,8 +18,12 @@ public:
 
     void set_application(AudioDesk* app);
 
+    void create_row_builder(const std::string &resource_path);
+
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
     AudioDesk* audiodesk{};
+
+    Glib::RefPtr<Gtk::Builder> row_builder;
 };
