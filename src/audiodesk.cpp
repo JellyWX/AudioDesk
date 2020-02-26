@@ -9,7 +9,7 @@ AudioDesk::AudioDesk(int argc, char** argv, const std::string& name)
 
     this->app = Gtk::Application::create(argc, argv, name);
 }
-    
+
 void AudioDesk::run_setup()
 {
     std::cout << "Default device not set or not found. Loading setup screen." << std::endl;
@@ -31,6 +31,10 @@ void AudioDesk::run_main()
 
     this->main_window->set_application(this);
     this->main_window->create_row_builder("interfaces/button_row.glade");
+
+    this->main_window->add_sound_button("Die", "/die");
+    this->main_window->add_sound_button("Die", "/die");
+    //this->main_window->add_sound_button("Die", "/die");
 }
 
 int AudioDesk::run()
@@ -49,7 +53,7 @@ int AudioDesk::run()
     {
         this->current_window = this->main_window;
     }
-    
+
     return this->app->run(*current_window);
 }
 
