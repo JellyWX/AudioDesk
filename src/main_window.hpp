@@ -6,6 +6,7 @@
 #include <gtkmm.h>
 #include <iostream>
 #include "audiodesk.hpp"
+#include "button_row.hpp"
 
 
 class MainWindow : public Gtk::Window
@@ -26,4 +27,6 @@ private:
     AudioDesk* audiodesk{};
 
     Glib::RefPtr<Gtk::Builder> row_builder;
+
+    void add_sound_button(const std::string &sound_name, const std::string &sound_path);
 };
