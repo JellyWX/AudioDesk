@@ -44,15 +44,10 @@
             <property name="position">1</property>
           </packing>
         </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="soundstore">
-    <columns>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-      <!-- column-name path -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

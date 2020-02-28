@@ -30,7 +30,6 @@ void AudioDesk::run_main()
     builder->get_widget_derived("main", this->main_window);
 
     this->main_window->set_application(this);
-    this->main_window->create_row_builder("interfaces/button_row.glade");
 
     this->main_window->add_sound_button("Die", "/die");
     this->main_window->add_sound_button("Die", "/die");

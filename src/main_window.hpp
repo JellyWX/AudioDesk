@@ -20,8 +20,6 @@ public:
 
     void set_application(AudioDesk* app);
 
-    void create_row_builder(const std::string &resource_path);
-
     void add_sound_button(const std::string &sound_name, const std::string &sound_path);
 
 private:
