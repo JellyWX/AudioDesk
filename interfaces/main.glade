@@ -2,14 +2,6 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkListStore" id="soundstore">
-    <columns>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-      <!-- column-name path -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkWindow" id="main">
     <property name="can_focus">False</property>
     <property name="default_width">600</property>
@@ -37,13 +29,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTreeView">
+          <object class="GtkBox" id="sounds">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="model">soundstore</property>
-            <property name="headers_visible">False</property>
-            <child internal-child="selection">
-              <object class="GtkTreeSelection"/>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -54,5 +46,13 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="soundstore">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name path -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
