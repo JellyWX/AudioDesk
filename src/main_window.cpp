@@ -12,23 +12,7 @@ MainWindow::MainWindow(
 
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)
 {
-    auto row = new Gtk::ButtonBox(Gtk::ORIENTATION_HORIZONTAL);
-    row->set_layout(Gtk::BUTTONBOX_START);
-
-    auto label = new Gtk::Label(sound_name);
-    row->pack_start(*label, true, true);
-
-    auto play = new Gtk::Button();
-    auto play_label = new Gtk::Label("Play Down Mic");
-    play->add(*play_label);
-    row->pack_start(*play, true, true);
-    row->set_child_secondary(*play, true);
-
-    auto demo = new Gtk::Button();
-    auto demo_label = new Gtk::Label("Demo");
-    demo->add(*demo_label);
-    row->pack_start(*demo, true, true);
-    row->set_child_secondary(*demo, true);
+    auto row = new ButtonRow(sound_name, sound_path);
 
     this->sound_box->add(*row);
     row->show_all();

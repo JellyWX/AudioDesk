@@ -31,9 +31,7 @@ void AudioDesk::run_main()
 
     this->main_window->set_application(this);
 
-    this->main_window->add_sound_button("Die 0", "/die");
-    this->main_window->add_sound_button("Die", "/die");
-    this->main_window->add_sound_button("Die", "/die");
+    this->main_window->add_sound_button("Die 0", "audio/hattrick.mp3");
 }
 
 int AudioDesk::run()

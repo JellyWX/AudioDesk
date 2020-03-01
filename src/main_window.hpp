@@ -7,7 +7,6 @@
 #include <iostream>
 #include "audiodesk.hpp"
 #include "button_row.hpp"
-#include "sound_box.hpp"
 
 
 class MainWindow : public Gtk::Window
