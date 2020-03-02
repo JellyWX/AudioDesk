@@ -79,6 +79,7 @@ void Setup::load_from_ini(DeviceQuerier* d_query)
 
         case FileLoadStatus::Success:
             this->VOLUME = std::stod(this->conf_loader.get_value("Stream", "VOLUME"));
+            this->MIC_VOLUME = std::stod(this->conf_loader.get_value("Stream", "MIC_VOLUME"));
             this->BITRATE = std::stoi(this->conf_loader.get_value("Stream", "BITRATE"));
             this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED") == "true";
 
@@ -110,6 +111,7 @@ void Setup::save_to_ini()
 
     this->conf_loader.add_entry("Stream", "BITRATE", std::to_string(this->BITRATE));
     this->conf_loader.add_entry("Stream", "VOLUME", std::to_string(this->VOLUME));
+    this->conf_loader.add_entry("Stream", "MIC_VOLUME", std::to_string(this->MIC_VOLUME));
 
     FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
 

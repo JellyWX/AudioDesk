@@ -1,3 +1,4 @@
+#include <iostream>
 #include "button_row.hpp"
 
 
@@ -5,6 +6,10 @@ ButtonRow::ButtonRow(const std::string& sound_name, const std::string& sound_pat
 {
     this->name = sound_name;
     this->path = get_usable_path_for(sound_path);
+
+    std::stringstream command_content;
+    command_content << "scripts/bash/play_audio.sh " << this->path << " &";
+    this->command = command_content.str();
 
     this->set_orientation(Gtk::ORIENTATION_HORIZONTAL);
     this->set_layout(Gtk::BUTTONBOX_START);
@@ -30,9 +35,5 @@ ButtonRow::ButtonRow(const std::string& sound_name, const std::string& sound_pat
 
 void ButtonRow::play()
 {
-    std::stringstream command;
-
-    command << "scripts/bash/play_audio.sh " << this->path << " &";
-
-    system(command.str().c_str());
+    system(this->command.c_str());
 }

@@ -21,12 +21,19 @@ public:
 
     void add_sound_button(const std::string &sound_name, const std::string &sound_path);
 
+    void on_change_mic_volume(double new_volume);
+
+    void on_change_volume(double new_volume);
+
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
     AudioDesk* audiodesk{};
 
     Gtk::Box* sound_box;
+
+    Gtk::VolumeButton* volume_switch;
+    Gtk::VolumeButton* mic_volume_switch;
 
     Glib::RefPtr<Gtk::Builder> row_builder;
 };

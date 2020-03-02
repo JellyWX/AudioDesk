@@ -27,6 +27,7 @@ public:
     ConfType load_type = New;
 
     double VOLUME = 1.0;
+    double MIC_VOLUME = 1.0;
     int BITRATE = 36000;
 
     bool CACHE_ENABLED = true;

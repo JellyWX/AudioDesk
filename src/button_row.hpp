@@ -2,6 +2,8 @@
 
 #include <gtkmm.h>
 #include <sstream>
+#include <iostream>
+
 #include "utils.hpp"
 
 class ButtonRow : public Gtk::ButtonBox
@@ -13,6 +15,8 @@ public:
 
 private:
     std::string name;
+
+    std::string command;
 
     std::string path;
 };
