@@ -2,14 +2,11 @@
 #include "button_row.hpp"
 
 
-ButtonRow::ButtonRow(const std::string& sound_name, const std::string& sound_path)
+ButtonRow::ButtonRow(const std::string& sound_name, const std::string& sound_path, AudioDesk* app)
 {
     this->name = sound_name;
     this->path = get_usable_path_for(sound_path);
-
-    std::stringstream command_content;
-    command_content << "scripts/bash/play_audio.sh " << this->path << " &";
-    this->command = command_content.str();
+    this->audiodesk = app;
 
     this->set_orientation(Gtk::ORIENTATION_HORIZONTAL);
     this->set_layout(Gtk::BUTTONBOX_START);
@@ -35,5 +32,10 @@ ButtonRow::ButtonRow(const std::string& sound_name, const std::string& sound_pat
 
 void ButtonRow::play()
 {
-    system(this->command.c_str());
+    std::stringstream command_content;
+    command_content << "scripts/bash/play_audio.sh " << this->path << " " << (short)(this->audiodesk->setup.VOLUME * 100) << " &";
+
+    std::cout << command_content.str() << std::endl;
+
+    system(command_content.str().c_str());
 }
