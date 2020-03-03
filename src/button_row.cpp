@@ -17,6 +17,9 @@ ButtonRow::ButtonRow(const std::string& sound_name, const std::string& sound_pat
     auto play = new Gtk::Button();
     auto play_label = new Gtk::Label("Play Down Mic");
     play->add(*play_label);
+    play->signal_clicked().connect(
+        sigc::mem_fun(*this, &ButtonRow::play_mic)
+    );
     this->pack_start(*play, true, true);
     this->set_child_secondary(*play, true);
 
@@ -34,6 +37,16 @@ void ButtonRow::play()
 {
     std::stringstream command_content;
     command_content << "scripts/bash/play_audio.sh " << this->path << " " << (short)(this->audiodesk->setup.VOLUME * 100) << " &";
+
+    std::cout << command_content.str() << std::endl;
+
+    system(command_content.str().c_str());
+}
+
+void ButtonRow::play_mic()
+{
+    std::stringstream command_content;
+    command_content << "scripts/bash/stream_audio.sh " << this->path << " " << this->audiodesk->setup.MIC_VOLUME << " &";
 
     std::cout << command_content.str() << std::endl;
 

@@ -23,6 +23,10 @@ void AudioDesk::run_setup()
 
 void AudioDesk::run_main()
 {
+    std::cout << "Checking current default device" << std::endl;
+
+
+
     std::cout << "Generating a primary window" << std::endl;
 
     Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("interfaces/main.glade");

@@ -15,6 +15,8 @@ public:
 
     void play();
 
+    void play_mic();
+
 private:
     std::string name;
 
