@@ -23,9 +23,18 @@ void AudioDesk::run_setup()
 
 void AudioDesk::run_main()
 {
-    std::cout << "Checking current default device" << std::endl;
+    std::cout << "Checking existing devices" << std::endl;
 
+    if (not device_query.device_exists("audiodesk_mixer.monitor"))
+    {
+        std::cout << "No device found. Running install_virtmic.sh" << std::endl;
 
+        system("scripts/bash/install_virtmic.sh");
+    }
+    else
+    {
+        std::cout << "Devices already set up" << std::endl;
+    }
 
     std::cout << "Generating a primary window" << std::endl;
 

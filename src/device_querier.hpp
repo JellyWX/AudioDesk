@@ -12,7 +12,7 @@ class DeviceQuerier
 public:
     DeviceQuerier();
 
-    bool device_exists(const std::string &name);
+    bool device_exists(const std::string& name);
 
     std::vector<std::string> devices;
 
