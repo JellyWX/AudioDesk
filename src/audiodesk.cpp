@@ -23,20 +23,20 @@ void AudioDesk::run_setup()
 
 void AudioDesk::run_main()
 {
-    std::cout << "Checking existing devices" << std::endl;
+    std::cout << "run_main: Checking existing devices" << std::endl;
 
     if (not device_query.device_exists("audiodesk_mixer.monitor"))
     {
-        std::cout << "No device found. Running install_virtmic.sh" << std::endl;
+        std::cout << "run_main: No device found. Running install_virtmic.sh" << std::endl;
 
         system("scripts/bash/install_virtmic.sh");
     }
     else
     {
-        std::cout << "Devices already set up" << std::endl;
+        std::cout << "run_main: Devices already set up" << std::endl;
     }
 
-    std::cout << "Generating a primary window" << std::endl;
+    std::cout << "run_main: Generating a primary window" << std::endl;
 
     Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("interfaces/main.glade");
 
@@ -69,8 +69,8 @@ int AudioDesk::run()
 
 void AudioDesk::switch_window(Gtk::Window* window)
 {
-    std::cout << "Switching active window" << std::endl
-              << "Removing existing window" << std::endl;
+    std::cout << "switch_window: Switching active window" << std::endl
+              << "switch_window: Removing existing window" << std::endl;
     this->app->hold();
 
     this->current_window->hide();
@@ -83,6 +83,6 @@ void AudioDesk::switch_window(Gtk::Window* window)
 
     this->app->release();
 
-    std::cout << "Current window successfully switched" << std::endl;
+    std::cout << "switch_window: Current window successfully switched" << std::endl;
     this->current_window = window;
 }
