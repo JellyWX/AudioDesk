@@ -5,8 +5,10 @@
 
 #include <gtkmm.h>
 #include <iostream>
+
 #include "audiodesk.hpp"
 #include "button_row.hpp"
+#include "soundfx_api.hpp"
 
 
 class MainWindow : public Gtk::Window
@@ -25,6 +27,7 @@ public:
 
     void on_change_volume(double new_volume);
 
+    SoundFX_API soundfx_api;
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 

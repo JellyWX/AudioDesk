@@ -3,7 +3,7 @@
 MainWindow::MainWindow(
     BaseObjectType* object,
     const Glib::RefPtr<Gtk::Builder>& builder
-    ) : Gtk::Window(object), builder(builder)
+    ) : Gtk::Window(object), builder(builder), soundfx_api(SoundFX_API())
 {
     this->audiodesk = nullptr;
 
