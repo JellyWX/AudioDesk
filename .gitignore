@@ -34,3 +34,4 @@
 build
 SFML
 release
+cmake-build-debug

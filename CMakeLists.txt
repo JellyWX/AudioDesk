@@ -10,4 +10,6 @@ FetchContent_MakeAvailable(cpr)
 
 pkg_check_modules(GTKMM gtkmm-3.0)
 
+include(FindJsoncpp.cmake)
+
 add_subdirectory(src)
