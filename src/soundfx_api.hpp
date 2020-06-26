@@ -18,7 +18,7 @@ public:
 
     std::vector<Sound> get_sounds(unsigned short page_number);
 
-    std::string download_sound();
+    std::string download_sound(unsigned int id);
 
 private:
     std::string API_DOMAIN = "https://localhost:5000/";

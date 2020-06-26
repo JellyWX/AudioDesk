@@ -5,7 +5,7 @@
 class Sound
 {
 public:
-    Sound(std::string name, unsigned short plays);
+    Sound(std::string name, unsigned short plays, unsigned int id);
 
     std::string get_name() const { return name; }
 
@@ -15,4 +15,6 @@ private:
     std::string name;
 
     unsigned short plays;
+
+    unsigned int id;
 };

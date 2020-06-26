@@ -27,7 +27,7 @@ std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number)
             {
                 std::cout << sound["name"] << std::endl;
 
-                sounds.emplace_back(sound["name"].asString(), sound["plays"].asUInt());
+                sounds.emplace_back(sound["name"].asString(), sound["plays"].asUInt(), sound["id"].asUInt());
             }
         }
     }
