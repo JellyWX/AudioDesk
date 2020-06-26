@@ -39,3 +39,48 @@ std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number)
     std::cout << "Got " << sounds.size() << " sounds" << std::endl;
     return sounds;
 }
+
+std::string SoundFX_API::download_sound(unsigned int id)
+{
+    std::string id_str = std::to_string(id);
+    std::string path = get_usable_path_for("cache/id_" + id_str);
+
+    cpr::Response api_response = cpr::Get(cpr::Url{API_DOWNLOAD + "?sound_id=" + id_str});
+
+    if ( api_response.status_code == 200 )
+    {
+        Json::Value root;
+        Json::CharReaderBuilder builder;
+        JSONCPP_STRING err;
+
+        const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+
+        if (!reader->parse(api_response.text.c_str(),api_response.text.c_str() + api_response.text.length(), &root, &err))
+        {
+            std::cerr << "Failed to read JSON response from SoundFX API" << std::endl;
+        }
+        else
+        {
+            std::string source = base64_decode(root["source"].asString());
+
+            std::fstream file;
+
+            file.open(path, std::ios::out);
+
+            if (file.is_open())
+            {
+                file << source;
+            }
+            else
+            {
+                std::cerr << "Failed to write sound to file" << std::endl;
+            }
+        }
+    }
+    else
+    {
+        std::cerr << "Bad API response: " << api_response.status_code << "; " << api_response.text << std::endl;
+    }
+
+    return path;
+}

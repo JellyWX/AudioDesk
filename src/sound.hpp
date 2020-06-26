@@ -11,6 +11,8 @@ public:
 
     unsigned short get_plays() const { return plays; }
 
+    unsigned int get_id() const { return id; }
+
 private:
     std::string name;
 

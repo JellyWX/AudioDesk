@@ -8,6 +8,7 @@
 #include "setup.hpp"
 #include "setup_window.hpp"
 #include "main_window.hpp"
+#include "soundfx_api.hpp"
 
 
 class AudioDesk
@@ -20,6 +21,8 @@ public:
     DeviceQuerier device_query = DeviceQuerier();
 
     Setup setup = Setup();
+
+    SoundFX_API soundfx_api = SoundFX_API();
 
     SetupWindow* setup_window;
     MainWindow* main_window;

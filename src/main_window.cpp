@@ -3,11 +3,15 @@
 MainWindow::MainWindow(
     BaseObjectType* object,
     const Glib::RefPtr<Gtk::Builder>& builder
-    ) : Gtk::Window(object), builder(builder), soundfx_api(SoundFX_API())
+    ) : Gtk::Window(object), builder(builder)
 {
     this->audiodesk = nullptr;
 
     builder->get_widget("sounds", this->sound_box);
+    builder->get_widget("online_sounds", this->online_sound_box);
+
+    builder->get_widget("next_page", this->next_page);
+    builder->get_widget("prev_page", this->prev_page);
 
     builder->get_widget("change_vol", this->volume_switch);
     builder->get_widget("change_mic", this->mic_volume_switch);
@@ -15,9 +19,17 @@ MainWindow::MainWindow(
 
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)
 {
-    auto row = new ButtonRow(sound_name, sound_path, this->audiodesk);
+    auto row = new LocalButtonRow(sound_name, sound_path, this->audiodesk);
 
     this->sound_box->add(*row);
+    row->show_all();
+}
+
+void MainWindow::add_online_sound_button(const Sound& sound)
+{
+    auto row = new RemoteButtonRow(sound, this->audiodesk);
+
+    this->online_sound_box->add(*row);
     row->show_all();
 }
 

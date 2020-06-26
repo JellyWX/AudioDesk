@@ -23,17 +23,22 @@ public:
 
     void add_sound_button(const std::string &sound_name, const std::string &sound_path);
 
+    void add_online_sound_button(const Sound& sound);
+
     void on_change_mic_volume(double new_volume);
 
     void on_change_volume(double new_volume);
 
-    SoundFX_API soundfx_api;
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
     AudioDesk* audiodesk{};
 
     Gtk::Box* sound_box;
+    Gtk::Box* online_sound_box;
+
+    Gtk::Button* next_page;
+    Gtk::Button* prev_page;
 
     Gtk::VolumeButton* volume_switch;
     Gtk::VolumeButton* mic_volume_switch;
