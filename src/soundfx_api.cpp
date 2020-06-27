@@ -44,6 +44,7 @@ std::string SoundFX_API::download_sound(unsigned int id)
 {
     std::string id_str = std::to_string(id);
     std::string path = get_usable_path_for("cache/id_" + id_str);
+    std::string meta_path = get_usable_path_for("cache/id_" + id_str + ".meta");
 
     cpr::Response api_response = cpr::Get(cpr::Url{API_DOWNLOAD + "?sound_id=" + id_str});
 
@@ -63,13 +64,21 @@ std::string SoundFX_API::download_sound(unsigned int id)
         {
             std::string source = base64_decode(root["source"].asString());
 
-            std::fstream file;
+            std::fstream file, meta_file;
 
             file.open(path, std::ios::out);
+            meta_file.open(meta_path, std::ios::out);
 
-            if (file.is_open())
+            if (file.is_open() && meta_file.is_open())
             {
                 file << source;
+
+                Json::Value meta_root;
+
+                meta_root["id"] = root["id"];
+                meta_root["name"] = root["name"];
+
+                meta_file << meta_root;
             }
             else
             {

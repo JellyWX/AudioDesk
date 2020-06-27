@@ -6,7 +6,6 @@
 #include <iostream>
 
 #include <cpr/cpr.h>
-#include <cpr/ssl_options.h>
 #include "jsoncpp/json/json.h"
 
 #include "sound.hpp"
@@ -23,7 +22,7 @@ public:
     std::string download_sound(unsigned int id);
 
 private:
-    std::string API_ROOT = "https://localhost:5000/";
+    std::string API_ROOT = "http://localhost:5000";
 
     std::string API_SEARCH = API_ROOT + "/api/search/";
     std::string API_DOWNLOAD = API_ROOT + "/api/sound/";

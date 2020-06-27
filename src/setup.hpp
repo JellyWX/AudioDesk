@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <cerrno>
+
 #include "ini.hpp"
 #include "utils.hpp"
 #include "device_querier.hpp"

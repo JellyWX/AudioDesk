@@ -4,6 +4,10 @@
 #include "windows.fwd.hpp"
 
 #include <gtkmm.h>
+#include <dirent.h>
+#include <cerrno>
+#include <regex>
+
 #include "device_querier.hpp"
 #include "setup.hpp"
 #include "setup_window.hpp"
@@ -36,5 +40,7 @@ private:
     void run_setup();
 
     void run_main();
+
+    void read_sound_cache();
 
 };

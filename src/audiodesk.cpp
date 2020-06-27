@@ -44,9 +44,12 @@ void AudioDesk::run_main()
 
     this->main_window->set_application(this);
 
-    this->main_window->add_sound_button("Die 0", "audio/hattrick.mp3");
+    this->read_sound_cache();
 
-    this->soundfx_api.get_sounds(0);
+    for (const Sound& sound : this->soundfx_api.get_sounds(0))
+    {
+        this->main_window->add_online_sound_button(sound);
+    }
 }
 
 int AudioDesk::run()
@@ -87,4 +90,71 @@ void AudioDesk::switch_window(Gtk::Window* window)
 
     std::cout << "switch_window: Current window successfully switched" << std::endl;
     this->current_window = window;
+}
+
+void AudioDesk::read_sound_cache()
+{
+    DIR *dir;
+    struct dirent *ent;
+
+    std::string cache_path = get_usable_path_for("cache");
+
+    if ((dir = opendir( cache_path.c_str() )) != NULL)
+    {
+        while ((ent = readdir(dir)) != NULL)
+        {
+            std::string d_name(ent->d_name);
+            std::string path = cache_path + "/" + d_name;
+
+            struct stat s;
+            if ( stat(path.c_str(), &s) == 0 )
+            {
+                if ( s.st_mode & S_IFREG )
+                {
+                    if (d_name.size() < 5 or d_name.substr(d_name.size()-5, 5) != std::string(".meta"))
+                    {
+                        std::fstream audio_file, meta_file;
+
+                        audio_file.open(path, std::ios::in);
+                        meta_file.open(path + ".meta", std::ios::in);
+
+                        if (audio_file.is_open())
+                        {
+                            if (meta_file.is_open())
+                            {
+                                Json::Value root;
+                                Json::CharReaderBuilder builder;
+                                JSONCPP_STRING errs;
+                                if (!parseFromStream(builder, meta_file, &root, &errs)) {
+                                    std::cout << "Corrupt metadata on cache/" << d_name << ": " << errs << std::endl;
+                                }
+                                else
+                                {
+                                    this->main_window->add_sound_button(root["name"].asString(), path);
+                                }
+                            }
+                            else
+                            {
+                                this->main_window->add_sound_button(d_name, path);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        closedir(dir);
+    }
+    else
+    {
+        if (errno == ENOENT)
+        {
+            if ( mkdir(cache_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0 )
+            {
+                std::cerr << "Failed to create a cache folder:" <<
+                " errno " << errno << "; " << strerror(errno) << std::endl;
+            }
+        }
+        else
+            std::cerr << "Error occured opening cache folder, errno " << errno << "; " << strerror(errno) << std::endl;
+    }
 }
