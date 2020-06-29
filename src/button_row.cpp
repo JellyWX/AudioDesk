@@ -5,7 +5,7 @@
 LocalButtonRow::LocalButtonRow(const std::string& sound_name, const std::string& sound_path, AudioDesk* app)
 {
     this->name = sound_name;
-    this->path = get_usable_path_for(sound_path);
+    this->path = sound_path;
     this->audiodesk = app;
 
     this->set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -54,7 +54,7 @@ void LocalButtonRow::play_mic()
 }
 
 RemoteButtonRow::RemoteButtonRow(
-        const Sound sound,
+        const Sound& sound,
         AudioDesk *app)
 
 : audiodesk(app), sound(sound)
@@ -65,14 +65,17 @@ RemoteButtonRow::RemoteButtonRow(
     auto label = new Gtk::Label(sound.get_name());
     this->pack_start(*label, true, true);
 
-    auto download = new Gtk::Button();
-    auto download_label = new Gtk::Label("Download");
-    download->add(*download_label);
-    download->signal_clicked().connect(
-        sigc::mem_fun(*this, &RemoteButtonRow::download)
-    );
-    this->pack_start(*download, true, true);
-    this->set_child_secondary(*download, true);
+    if (app->local_ids.find(sound.get_id()) == app->local_ids.end())
+    {
+        auto download = new Gtk::Button();
+        auto download_label = new Gtk::Label("Download");
+        download->add(*download_label);
+        download->signal_clicked().connect(
+            sigc::mem_fun(*this, &RemoteButtonRow::download)
+        );
+        this->pack_start(*download, false, false);
+        this->set_child_secondary(*download, true);
+    }
 }
 
 void RemoteButtonRow::download()

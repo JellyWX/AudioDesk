@@ -97,14 +97,16 @@ void AudioDesk::read_sound_cache()
     DIR *dir;
     struct dirent *ent;
 
-    std::string cache_path = get_usable_path_for("cache");
+    std::string cache_path = get_usable_path_for("cache").append("/");
 
     if ((dir = opendir( cache_path.c_str() )) != NULL)
     {
         while ((ent = readdir(dir)) != NULL)
         {
             std::string d_name(ent->d_name);
-            std::string path = cache_path + "/" + d_name;
+            std::string path = cache_path + d_name;
+
+            std::cout << "Searching path " << path << std::endl;
 
             struct stat s;
             if ( stat(path.c_str(), &s) == 0 )
@@ -130,6 +132,8 @@ void AudioDesk::read_sound_cache()
                                 }
                                 else
                                 {
+                                    this->local_ids.emplace(root["id"].asUInt());
+
                                     this->main_window->add_sound_button(root["name"].asString(), path);
                                 }
                             }

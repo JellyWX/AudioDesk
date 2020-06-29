@@ -31,7 +31,7 @@ private:
 class RemoteButtonRow : public Gtk::ButtonBox
 {
 public:
-    RemoteButtonRow(const Sound sound, AudioDesk* app);
+    RemoteButtonRow(const Sound& sound, AudioDesk* app);
 
     void download();
 

@@ -6,7 +6,7 @@
 #include <gtkmm.h>
 #include <dirent.h>
 #include <cerrno>
-#include <regex>
+#include <unordered_set>
 
 #include "device_querier.hpp"
 #include "setup.hpp"
@@ -27,6 +27,8 @@ public:
     Setup setup = Setup();
 
     SoundFX_API soundfx_api = SoundFX_API();
+
+    std::unordered_set<unsigned int> local_ids;
 
     SetupWindow* setup_window;
     MainWindow* main_window;
