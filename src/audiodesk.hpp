@@ -8,6 +8,9 @@
 #include <cerrno>
 #include <unordered_set>
 
+#include <sys/inotify.h>
+#include <poll.h>
+
 #include "device_querier.hpp"
 #include "setup.hpp"
 #include "setup_window.hpp"
@@ -34,6 +37,8 @@ public:
     MainWindow* main_window;
     Gtk::Window* current_window = nullptr;
 
+    int fd;
+
     int run();
 
     void switch_window(Gtk::Window* window);
@@ -43,6 +48,10 @@ private:
 
     void run_main();
 
-    void read_sound_cache();
+    bool read_sound_cache();
+
+    bool watch_sound_cache();
+
+    bool check_cache_events();
 
 };

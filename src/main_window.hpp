@@ -21,6 +21,8 @@ public:
 
     void set_application(AudioDesk* app);
 
+    void clear_sound_box();
+
     void add_sound_button(const std::string &sound_name, const std::string &sound_path);
 
     void add_online_sound_button(const Sound& sound);

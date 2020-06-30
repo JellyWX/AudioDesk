@@ -59,3 +59,11 @@ void MainWindow::set_application(AudioDesk* app)
         sigc::mem_fun(*this, &MainWindow::on_change_mic_volume)
     );
 }
+
+void MainWindow::clear_sound_box()
+{
+    std::vector<Gtk::Widget*> children = this->sound_box->get_children();
+
+    for (auto child : children)
+        this->sound_box->remove(*child);
+}

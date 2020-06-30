@@ -44,7 +44,13 @@ void AudioDesk::run_main()
 
     this->main_window->set_application(this);
 
-    this->read_sound_cache();
+    if ( this->read_sound_cache() and this->watch_sound_cache() )
+    {
+        Glib::signal_timeout().connect_seconds(
+                sigc::mem_fun(*this, &AudioDesk::check_cache_events),
+                5
+                );
+    }
 
     for (const Sound& sound : this->soundfx_api.get_sounds(0))
     {
@@ -92,8 +98,12 @@ void AudioDesk::switch_window(Gtk::Window* window)
     this->current_window = window;
 }
 
-void AudioDesk::read_sound_cache()
+bool AudioDesk::read_sound_cache()
 {
+    this->main_window->clear_sound_box();
+
+    bool directory_valid = false;
+
     DIR *dir;
     struct dirent *ent;
 
@@ -101,6 +111,8 @@ void AudioDesk::read_sound_cache()
 
     if ((dir = opendir( cache_path.c_str() )) != NULL)
     {
+        directory_valid = true;
+
         while ((ent = readdir(dir)) != NULL)
         {
             std::string d_name(ent->d_name);
@@ -150,15 +162,81 @@ void AudioDesk::read_sound_cache()
     }
     else
     {
+        // directory not present
         if (errno == ENOENT)
         {
-            if ( mkdir(cache_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0 )
+            // try to create directory
+            if ( mkdir( cache_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 )
             {
-                std::cerr << "Failed to create a cache folder:" <<
-                " errno " << errno << "; " << strerror(errno) << std::endl;
+                perror("mkdir( cache_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH )");
+            }
+            else
+            {
+                directory_valid = true;
             }
         }
+        // other error
         else
-            std::cerr << "Error occured opening cache folder, errno " << errno << "; " << strerror(errno) << std::endl;
+        {
+            perror("opendir( cache_path.c_str() )");
+        }
     }
+
+    return directory_valid;
+}
+
+bool AudioDesk::watch_sound_cache()
+{
+    fd = inotify_init();
+
+    if (fd < 0)
+    {
+        perror("inotify_init()");
+        return false;
+    }
+    else
+    {
+        int wd = inotify_add_watch(fd, get_usable_path_for("cache").c_str(), IN_CREATE | IN_DELETE | IN_MOVE );
+
+        if (wd < 0 )
+        {
+            perror("inotify_add_watch()");
+            return false;
+        }
+        else
+        {
+            std::cout << "inotify successfully set up" << std::endl;
+
+            return true;
+        }
+    }
+}
+
+bool AudioDesk::check_cache_events()
+{
+    struct pollfd fds[1];
+    int ret;
+
+    fds[0].fd = fd;
+    fds[0].events = POLLIN;
+
+    ret = poll(fds, 1, 0);
+    if (ret < 0)
+        perror ("poll(fds, 1, 0)");
+    else if (ret == 0)
+        std::cerr << "inotify read timed out" << std::endl;
+    else
+    {
+        std::cout << "flushing fd..." << std::endl;
+        // wipe out the contents of the file descriptor so we don't re-read old data
+        char c[64];
+        while (poll(fds, 1, 0))
+            read(fd, c, 64);
+
+        std::cout << "file changed detected; re-reading cache" << std::endl;
+
+        this->read_sound_cache();
+    }
+
+    return true;
 }
