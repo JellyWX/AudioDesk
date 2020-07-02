@@ -31,7 +31,7 @@
 *.out
 *.app
 
-build
-SFML
-release
-cmake-build-debug
+build/
+SFML/
+release/
+cmake-build-debug/
