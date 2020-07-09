@@ -18,7 +18,7 @@ LocalButtonRow::LocalButtonRow(const std::string& sound_name, const std::string&
 
     auto play = new Gtk::Button();
     play->set_name("play-button");
-    auto play_label = new Gtk::Label("\uf130");
+    auto play_label = new Gtk::Label("microphone-alt");
     play_label->set_name("fa");
     play->add(*play_label);
     play->signal_clicked().connect(
@@ -30,7 +30,7 @@ LocalButtonRow::LocalButtonRow(const std::string& sound_name, const std::string&
 
     auto demo = new Gtk::Button();
     demo->set_name("play-button");
-    auto demo_label = new Gtk::Label("\uf04b");
+    auto demo_label = new Gtk::Label("play");
     demo_label->set_name("fa");
     demo->add(*demo_label);
     demo->signal_clicked().connect(

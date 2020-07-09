@@ -18,12 +18,15 @@ label#sound-name {
 
 button#add-sound > label {
     color: black;
+    background-color: lightgray;
+    border: none;
 }
 
 button#add-sound {
     border-radius: 4px;
     margin: 3px 4px 3px 4px;
     padding: 4px;
+    background-color: lightgray;
 }
 
 button#play-button {
@@ -49,9 +52,6 @@ button {
     border-radius: 4px;
     border-image: none;
 
-    background-color: darkgrey;
-    background-image: none;
-
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 
     transition: box-shadow 0.5s;
@@ -64,4 +64,22 @@ button:hover {
 
 button:active {
     box-shadow: 0 0 5px 1px rgba(101,170,230,1);
+}
+
+.conf-button {
+    color: black;
+    background: none;
+    border: none;
+
+    font-family: "Fontawesome 5 Pro";
+}
+
+#conf-bar {
+    margin: 3px 8px 3px 8px;
+
+    background-color: white;
+}
+
+#main-box {
+    background-color: white;
 }

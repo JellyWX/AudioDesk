@@ -223,9 +223,7 @@ bool AudioDesk::check_cache_events()
     ret = poll(fds, 1, 0);
     if (ret < 0)
         perror ("poll(fds, 1, 0)");
-    else if (ret == 0)
-        std::cerr << "inotify read timed out" << std::endl;
-    else
+    else if (ret != 0)
     {
         std::cout << "flushing fd..." << std::endl;
         // wipe out the contents of the file descriptor so we don't re-read old data
