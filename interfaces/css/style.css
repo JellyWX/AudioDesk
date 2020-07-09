@@ -1,9 +1,44 @@
-.button-text {
-    color: white;
+label#sound-name {
+    font-size: 1.2em;
+    font-family: monospace;
+    font-weight: bold;
 }
 
-.row {
-    margin-top: 15px;
+#row {
+    border-radius: 4px;
+    margin: 3px 4px 3px 4px;
+    padding: 4px;
+    background-color: #fff;
+}
+
+#downloaded {
+    background-color: #f8f8f8;
+    color: black;
+}
+
+button#add-sound > label {
+    color: black;
+}
+
+button#add-sound {
+    border-radius: 4px;
+    margin: 3px 4px 3px 4px;
+    padding: 4px;
+}
+
+button#play-button {
+    border-radius: 10px;
+    color: #0002e5;
+    border-color: #5354f1;
+    border-style: solid;
+    border-width: 2px;
+    background: none;
+}
+
+label#fa {
+    font-size: 1.5em;
+    font-family: "Fontawesome 5 Pro";
+    font-weight: 900;
 }
 
 button {
@@ -17,24 +52,16 @@ button {
     background-color: darkgrey;
     background-image: none;
 
-    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0); 
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 
-    transition: box-shadow 1s;
+    transition: box-shadow 0.5s;
 }
 
 button:hover {
     border-color: #2EE2E6;
-    box-shadow: 0px 0px 2px 1px rgba(101,170,230,1);
-}
-
-button:active * {
-    color: grey;
+    box-shadow: 0 0 2px 1px rgba(101,170,230,1);
 }
 
 button:active {
-    box-shadow: 0px 0px 5px 1px rgba(101,170,230,1);
-}
-
-.button-play {
-    background-color: darkgrey;
+    box-shadow: 0 0 5px 1px rgba(101,170,230,1);
 }

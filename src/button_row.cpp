@@ -12,24 +12,32 @@ LocalButtonRow::LocalButtonRow(const std::string& sound_name, const std::string&
     this->set_layout(Gtk::BUTTONBOX_START);
 
     auto label = new Gtk::Label(sound_name);
+    label->set_name("sound-name");
+    label->set_halign(Gtk::ALIGN_START);
     this->pack_start(*label, true, true);
 
     auto play = new Gtk::Button();
-    auto play_label = new Gtk::Label("Play Down Mic");
+    play->set_name("play-button");
+    auto play_label = new Gtk::Label("\uf130");
+    play_label->set_name("fa");
     play->add(*play_label);
     play->signal_clicked().connect(
         sigc::mem_fun(*this, &LocalButtonRow::play_mic)
     );
-    this->pack_start(*play, true, true);
+    this->pack_end(*play, false, false);
+    this->set_child_non_homogeneous(*play, true);
     this->set_child_secondary(*play, true);
 
     auto demo = new Gtk::Button();
-    auto demo_label = new Gtk::Label("Demo");
+    demo->set_name("play-button");
+    auto demo_label = new Gtk::Label("\uf04b");
+    demo_label->set_name("fa");
     demo->add(*demo_label);
     demo->signal_clicked().connect(
         sigc::mem_fun(*this, &LocalButtonRow::play)
     );
-    this->pack_start(*demo, true, true);
+    this->pack_end(*demo, false, false);
+    this->set_child_non_homogeneous(*demo, true);
     this->set_child_secondary(*demo, true);
 }
 
@@ -81,6 +89,4 @@ RemoteButtonRow::RemoteButtonRow(
 void RemoteButtonRow::download()
 {
     std::string new_path = this->audiodesk->soundfx_api.download_sound(this->sound.get_id());
-
-    this->audiodesk->main_window->add_sound_button(this->sound.get_name(), new_path);
 }

@@ -20,6 +20,7 @@ MainWindow::MainWindow(
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)
 {
     auto row = new LocalButtonRow(sound_name, sound_path, this->audiodesk);
+    row->set_name("row");
 
     this->sound_box->add(*row);
     row->show_all();

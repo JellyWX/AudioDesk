@@ -4,6 +4,8 @@ project(AudioDesk)
 
 find_package(PkgConfig)
 
+include(FindFontconfig)
+
 include(FetchContent)
 FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/whoshuu/cpr.git)
 FetchContent_MakeAvailable(cpr)
