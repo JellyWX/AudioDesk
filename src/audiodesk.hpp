@@ -43,6 +43,9 @@ public:
 
     void switch_window(Gtk::Window* window);
 
+    void next_page();
+    void prev_page();
+
 private:
     void run_setup();
 
@@ -54,4 +57,7 @@ private:
 
     bool check_cache_events();
 
+    void read_sound_api();
+
+    int page_number = 0;
 };

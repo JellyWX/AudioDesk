@@ -52,10 +52,7 @@ void AudioDesk::run_main()
                 );
     }
 
-    for (const Sound& sound : this->soundfx_api.get_sounds(0))
-    {
-        this->main_window->add_online_sound_button(sound);
-    }
+    this->read_sound_api();
 }
 
 int AudioDesk::run()
@@ -185,6 +182,16 @@ bool AudioDesk::read_sound_cache()
     return directory_valid;
 }
 
+void AudioDesk::read_sound_api()
+{
+    this->main_window->clear_online_sound_box();
+
+    for (const Sound& sound : this->soundfx_api.get_sounds(this->page_number))
+    {
+        this->main_window->add_online_sound_button(sound);
+    }
+}
+
 bool AudioDesk::watch_sound_cache()
 {
     fd = inotify_init();
@@ -237,4 +244,21 @@ bool AudioDesk::check_cache_events()
     }
 
     return true;
+}
+
+void AudioDesk::next_page()
+{
+    ++this->page_number;
+
+    this->read_sound_api();
+}
+
+void AudioDesk::prev_page()
+{
+    if (this->page_number > 0)
+    {
+        --this->page_number;
+
+        this->read_sound_api();
+    }
 }

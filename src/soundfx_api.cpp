@@ -6,7 +6,11 @@ std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number)
 
     std::vector<Sound> sounds;
 
-    cpr::Response api_response = cpr::Get(cpr::Url{API_SEARCH});
+    std::stringstream full_url;
+
+    full_url << API_SEARCH << "?page=" << page_number;
+
+    cpr::Response api_response = cpr::Get(cpr::Url{full_url.str()});
 
     if ( api_response.status_code == 200 )
     {

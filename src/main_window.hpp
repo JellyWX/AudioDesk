@@ -22,9 +22,9 @@ public:
     void set_application(AudioDesk* app);
 
     void clear_sound_box();
+    void clear_online_sound_box();
 
     void add_sound_button(const std::string &sound_name, const std::string &sound_path);
-
     void add_online_sound_button(const Sound& sound);
 
     void on_change_mic_volume(double new_volume);
@@ -42,8 +42,8 @@ private:
     Gtk::Button* next_page;
     Gtk::Button* prev_page;
 
+    Gtk::SearchEntry* search_bar;
+
     Gtk::VolumeButton* volume_switch;
     Gtk::VolumeButton* mic_volume_switch;
-
-    Glib::RefPtr<Gtk::Builder> row_builder;
 };

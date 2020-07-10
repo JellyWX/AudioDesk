@@ -12,9 +12,32 @@ MainWindow::MainWindow(
 
     builder->get_widget("next_page", this->next_page);
     builder->get_widget("prev_page", this->prev_page);
+    builder->get_widget("search_bar", this->search_bar);
 
     builder->get_widget("change_vol", this->volume_switch);
     builder->get_widget("change_mic", this->mic_volume_switch);
+}
+
+void MainWindow::set_application(AudioDesk* app)
+{
+    this->audiodesk = app;
+
+    this->volume_switch->set_value(app->setup.VOLUME);
+    this->mic_volume_switch->set_value(app->setup.MIC_VOLUME);
+
+    this->volume_switch->signal_value_changed().connect(
+        sigc::mem_fun(*this, &MainWindow::on_change_volume)
+    );
+    this->mic_volume_switch->signal_value_changed().connect(
+        sigc::mem_fun(*this, &MainWindow::on_change_mic_volume)
+    );
+
+    this->next_page->signal_clicked().connect(
+        sigc::mem_fun(this->audiodesk, &AudioDesk::next_page)
+    );
+    this->prev_page->signal_clicked().connect(
+        sigc::mem_fun(this->audiodesk, &AudioDesk::prev_page)
+    );
 }
 
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)
@@ -46,25 +69,18 @@ void MainWindow::on_change_volume(double new_volume)
     this->audiodesk->setup.save_to_ini();
 }
 
-void MainWindow::set_application(AudioDesk* app)
-{
-    this->audiodesk = app;
-
-    this->volume_switch->set_value(app->setup.VOLUME);
-    this->mic_volume_switch->set_value(app->setup.MIC_VOLUME);
-
-    this->volume_switch->signal_value_changed().connect(
-        sigc::mem_fun(*this, &MainWindow::on_change_volume)
-    );
-    this->mic_volume_switch->signal_value_changed().connect(
-        sigc::mem_fun(*this, &MainWindow::on_change_mic_volume)
-    );
-}
-
 void MainWindow::clear_sound_box()
 {
     std::vector<Gtk::Widget*> children = this->sound_box->get_children();
 
     for (auto child : children)
         this->sound_box->remove(*child);
+}
+
+void MainWindow::clear_online_sound_box()
+{
+    std::vector<Gtk::Widget*> children = this->online_sound_box->get_children();
+
+    for (auto child : children)
+        this->online_sound_box->remove(*child);
 }

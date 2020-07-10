@@ -83,3 +83,7 @@ button:active {
 #main-box {
     background-color: white;
 }
+
+#search-bar {
+    padding: 0 10px 0 10px;
+}
