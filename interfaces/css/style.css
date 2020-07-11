@@ -38,7 +38,7 @@ button#play-button {
     background: none;
 }
 
-label#fa {
+label.fa {
     font-size: 1.5em;
     font-family: "Fontawesome 5 Pro";
     font-weight: 900;
@@ -72,6 +72,16 @@ button:active {
     border: none;
 
     font-family: "Fontawesome 5 Pro";
+    font-weight: 900;
+}
+
+.pager {
+    border: none;
+}
+
+.pager:hover {
+    border: none;
+    box-shadow: none;
 }
 
 #conf-bar {

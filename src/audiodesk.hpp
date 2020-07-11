@@ -58,6 +58,4 @@ private:
     bool check_cache_events();
 
     void read_sound_api();
-
-    int page_number = 0;
 };

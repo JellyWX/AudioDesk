@@ -1,6 +1,6 @@
 #include "soundfx_api.hpp"
 
-std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number)
+std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number, const std::optional<std::string>& search_query)
 {
     std::cout << "Requesting page " << page_number << " of sounds from the API" << std::endl;
 
@@ -8,7 +8,10 @@ std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number)
 
     std::stringstream full_url;
 
-    full_url << API_SEARCH << "?page=" << page_number;
+    if (search_query.has_value())
+        full_url << API_SEARCH << "?page=" << page_number << "&query=" << search_query.value();
+    else
+        full_url << API_SEARCH << "?page=" << page_number;
 
     cpr::Response api_response = cpr::Get(cpr::Url{full_url.str()});
 
@@ -25,12 +28,12 @@ std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number)
         }
         else
         {
+            this->max_page = root["last_page"].asUInt();
+
             Json::Value sound_list = root["sounds"];
 
             for (Json::Value &sound : sound_list)
             {
-                std::cout << sound["name"] << std::endl;
-
                 sounds.emplace_back(sound["name"].asString(), sound["plays"].asUInt(), sound["id"].asUInt());
             }
         }
@@ -96,4 +99,29 @@ std::string SoundFX_API::download_sound(unsigned int id)
     }
 
     return path;
+}
+
+void SoundFX_API::next_page()
+{
+    if (this->current_page < this->max_page)
+        ++this->current_page;
+}
+
+void SoundFX_API::prev_page()
+{
+    if (this->current_page > 0)
+        --this->current_page;
+}
+
+std::vector<Sound> SoundFX_API::get_page()
+{
+    return this->get_sounds(this->current_page);
+}
+
+void SoundFX_API::set_query(std::string new_query)
+{
+    this->query = std::move(new_query);
+
+    this->current_page = 0;
+    this->max_page = -1;
 }

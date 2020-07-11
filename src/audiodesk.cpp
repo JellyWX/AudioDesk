@@ -186,7 +186,7 @@ void AudioDesk::read_sound_api()
 {
     this->main_window->clear_online_sound_box();
 
-    for (const Sound& sound : this->soundfx_api.get_sounds(this->page_number))
+    for (const Sound& sound : this->soundfx_api.get_page())
     {
         this->main_window->add_online_sound_button(sound);
     }
@@ -248,17 +248,14 @@ bool AudioDesk::check_cache_events()
 
 void AudioDesk::next_page()
 {
-    ++this->page_number;
+    this->soundfx_api.next_page();
 
     this->read_sound_api();
 }
 
 void AudioDesk::prev_page()
 {
-    if (this->page_number > 0)
-    {
-        --this->page_number;
+    this->soundfx_api.prev_page();
 
-        this->read_sound_api();
-    }
+    this->read_sound_api();
 }

@@ -38,6 +38,10 @@ void MainWindow::set_application(AudioDesk* app)
     this->prev_page->signal_clicked().connect(
         sigc::mem_fun(this->audiodesk, &AudioDesk::prev_page)
     );
+
+    this->search_bar->signal_button_press_event().connect(
+        sigc::mem_fun(*this, &MainWindow::search_query)
+    );
 }
 
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)
@@ -83,4 +87,11 @@ void MainWindow::clear_online_sound_box()
 
     for (auto child : children)
         this->online_sound_box->remove(*child);
+}
+
+void MainWindow::search_query()
+{
+    std::string query = this->search_bar->get_text();
+
+    this->audiodesk->soundfx_api.set_query(query);
 }

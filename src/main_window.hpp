@@ -31,6 +31,8 @@ public:
 
     void on_change_volume(double new_volume);
 
+    void search_query();
+
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 

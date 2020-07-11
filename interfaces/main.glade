@@ -60,12 +60,12 @@
                             <property name="receives_default">True</property>
                             <child>
                               <object class="GtkLabel">
-                                <property name="name">fa</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">plus</property>
                                 <style>
                                   <class name="black-font"/>
+                                  <class name="fa"/>
                                 </style>
                               </object>
                             </child>
@@ -140,12 +140,17 @@
                         <property name="always_show_image">True</property>
                         <child>
                           <object class="GtkLabel">
-                            <property name="name">fa</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">chevron-left</property>
+                            <style>
+                              <class name="fa"/>
+                            </style>
                           </object>
                         </child>
+                        <style>
+                          <class name="pager"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -177,12 +182,17 @@
                         <property name="always_show_image">True</property>
                         <child>
                           <object class="GtkLabel">
-                            <property name="name">fa</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">chevron-right</property>
+                            <style>
+                              <class name="fa"/>
+                            </style>
                           </object>
                         </child>
+                        <style>
+                          <class name="pager"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -345,10 +355,12 @@ microphone-sensitivity-medium-symbolic</property>
                 <property name="always_show_image">True</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="name">fa</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">cog</property>
+                    <style>
+                      <class name="fa"/>
+                    </style>
                   </object>
                 </child>
                 <style>

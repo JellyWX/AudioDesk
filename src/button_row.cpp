@@ -19,7 +19,7 @@ LocalButtonRow::LocalButtonRow(const std::string& sound_name, const std::string&
     auto play = new Gtk::Button();
     play->set_name("play-button");
     auto play_label = new Gtk::Label("microphone-alt");
-    play_label->set_name("fa");
+    play_label->get_style_context()->add_class("fa");
     play->add(*play_label);
     play->signal_clicked().connect(
         sigc::mem_fun(*this, &LocalButtonRow::play_mic)
@@ -31,7 +31,7 @@ LocalButtonRow::LocalButtonRow(const std::string& sound_name, const std::string&
     auto demo = new Gtk::Button();
     demo->set_name("play-button");
     auto demo_label = new Gtk::Label("play");
-    demo_label->set_name("fa");
+    demo_label->get_style_context()->add_class("fa");
     demo->add(*demo_label);
     demo->signal_clicked().connect(
         sigc::mem_fun(*this, &LocalButtonRow::play)
@@ -77,11 +77,13 @@ RemoteButtonRow::RemoteButtonRow(
     {
         auto download = new Gtk::Button();
         auto download_label = new Gtk::Label("Download");
+        download_label->get_style_context()->add_class("fa");
         download->add(*download_label);
         download->signal_clicked().connect(
             sigc::mem_fun(*this, &RemoteButtonRow::download)
         );
         this->pack_start(*download, false, false);
+        this->set_child_non_homogeneous(*download, true);
         this->set_child_secondary(*download, true);
     }
 }
