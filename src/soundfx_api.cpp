@@ -115,12 +115,15 @@ void SoundFX_API::prev_page()
 
 std::vector<Sound> SoundFX_API::get_page()
 {
-    return this->get_sounds(this->current_page);
+    return this->get_sounds(this->current_page, this->query);
 }
 
 void SoundFX_API::set_query(std::string new_query)
 {
-    this->query = std::move(new_query);
+    if ( new_query.length() > 0 )
+        this->query = std::move(new_query);
+    else
+        this->query = std::nullopt;
 
     this->current_page = 0;
     this->max_page = -1;

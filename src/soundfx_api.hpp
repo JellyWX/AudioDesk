@@ -40,5 +40,5 @@ private:
     unsigned int current_page = 0;
     unsigned int max_page = -1;
 
-    std::string query;
+    std::optional<std::string> query;
 };

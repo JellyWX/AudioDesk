@@ -44,7 +44,8 @@ private:
     Gtk::Button* next_page;
     Gtk::Button* prev_page;
 
-    Gtk::SearchEntry* search_bar;
+    Gtk::Entry* search_entry;
+    Gtk::Button* search_button;
 
     Gtk::VolumeButton* volume_switch;
     Gtk::VolumeButton* mic_volume_switch;

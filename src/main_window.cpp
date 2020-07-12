@@ -12,7 +12,9 @@ MainWindow::MainWindow(
 
     builder->get_widget("next_page", this->next_page);
     builder->get_widget("prev_page", this->prev_page);
-    builder->get_widget("search_bar", this->search_bar);
+
+    builder->get_widget("search_entry", this->search_entry);
+    builder->get_widget("search_button", this->search_button);
 
     builder->get_widget("change_vol", this->volume_switch);
     builder->get_widget("change_mic", this->mic_volume_switch);
@@ -39,7 +41,7 @@ void MainWindow::set_application(AudioDesk* app)
         sigc::mem_fun(this->audiodesk, &AudioDesk::prev_page)
     );
 
-    this->search_bar->signal_button_press_event().connect(
+    this->search_button->signal_clicked().connect(
         sigc::mem_fun(*this, &MainWindow::search_query)
     );
 }
@@ -91,7 +93,9 @@ void MainWindow::clear_online_sound_box()
 
 void MainWindow::search_query()
 {
-    std::string query = this->search_bar->get_text();
+    std::string query = this->search_entry->get_text();
 
     this->audiodesk->soundfx_api.set_query(query);
+
+    this->audiodesk->read_sound_api();
 }

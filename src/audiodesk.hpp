@@ -46,6 +46,8 @@ public:
     void next_page();
     void prev_page();
 
+    void read_sound_api();
+
 private:
     void run_setup();
 
@@ -57,5 +59,4 @@ private:
 
     bool check_cache_events();
 
-    void read_sound_api();
 };
