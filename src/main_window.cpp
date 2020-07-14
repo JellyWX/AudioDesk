@@ -10,8 +10,9 @@ MainWindow::MainWindow(
     builder->get_widget("sounds", this->sound_box);
     builder->get_widget("online_sounds", this->online_sound_box);
 
+    builder->get_widget("online_scroll_area", this->online_scroll_area);
+
     builder->get_widget("next_page", this->next_page);
-    builder->get_widget("prev_page", this->prev_page);
 
     builder->get_widget("search_entry", this->search_entry);
     builder->get_widget("search_button", this->search_button);
@@ -37,10 +38,10 @@ void MainWindow::set_application(AudioDesk* app)
     this->next_page->signal_clicked().connect(
         sigc::mem_fun(this->audiodesk, &AudioDesk::next_page)
     );
-    this->prev_page->signal_clicked().connect(
-        sigc::mem_fun(this->audiodesk, &AudioDesk::prev_page)
-    );
 
+    this->search_entry->signal_activate().connect(
+        sigc::mem_fun(*this, &MainWindow::search_query)
+    );
     this->search_button->signal_clicked().connect(
         sigc::mem_fun(*this, &MainWindow::search_query)
     );
@@ -94,6 +95,12 @@ void MainWindow::clear_online_sound_box()
 void MainWindow::search_query()
 {
     std::string query = this->search_entry->get_text();
+
+    this->clear_online_sound_box();
+
+    auto adjustment = this->online_scroll_area->get_vadjustment();
+    adjustment->set_value(0);
+    this->online_scroll_area->set_vadjustment(adjustment);
 
     this->audiodesk->soundfx_api.set_query(query);
 

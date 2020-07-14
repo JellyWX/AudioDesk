@@ -41,8 +41,9 @@ private:
     Gtk::Box* sound_box;
     Gtk::Box* online_sound_box;
 
+    Gtk::ScrolledWindow* online_scroll_area;
+
     Gtk::Button* next_page;
-    Gtk::Button* prev_page;
 
     Gtk::Entry* search_entry;
     Gtk::Button* search_button;

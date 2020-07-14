@@ -95,5 +95,23 @@ button:active {
 }
 
 #search-bar {
-    padding: 0 10px 0 10px;
+    border-radius: 4px 4px 0 0;
+    padding: 2px 10px 2px 10px;
+    background-color: white;
+}
+
+#search-button {
+    border-radius: 4px 0 0 4px;
+    margin-right: 0;
+    border-right: none;
+}
+
+#search-entry {
+    border-radius: 0 4px 4px 0;
+    margin-left: 0;
+}
+
+#search-entry:focus {
+    border-color: #2EE2E6;
+    box-shadow: 0 0 2px 1px rgba(101,170,230,1);
 }

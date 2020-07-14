@@ -184,8 +184,6 @@ bool AudioDesk::read_sound_cache()
 
 void AudioDesk::read_sound_api()
 {
-    this->main_window->clear_online_sound_box();
-
     for (const Sound& sound : this->soundfx_api.get_page())
     {
         this->main_window->add_online_sound_button(sound);
