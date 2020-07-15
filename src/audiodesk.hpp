@@ -44,9 +44,8 @@ public:
     void switch_window(Gtk::Window* window);
 
     void next_page();
-    void prev_page();
 
-    void read_sound_api();
+    void add_online_page(const std::vector<Sound>& sounds) const;
 
 private:
     void run_setup();

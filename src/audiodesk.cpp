@@ -52,7 +52,7 @@ void AudioDesk::run_main()
                 );
     }
 
-    this->read_sound_api();
+    this->add_online_page(this->soundfx_api.get_current_page());
 }
 
 int AudioDesk::run()
@@ -182,9 +182,9 @@ bool AudioDesk::read_sound_cache()
     return directory_valid;
 }
 
-void AudioDesk::read_sound_api()
+void AudioDesk::add_online_page(const std::vector<Sound>& sounds) const
 {
-    for (const Sound& sound : this->soundfx_api.get_page())
+    for (const Sound& sound : sounds)
     {
         this->main_window->add_online_sound_button(sound);
     }
@@ -246,14 +246,5 @@ bool AudioDesk::check_cache_events()
 
 void AudioDesk::next_page()
 {
-    this->soundfx_api.next_page();
-
-    this->read_sound_api();
-}
-
-void AudioDesk::prev_page()
-{
-    this->soundfx_api.prev_page();
-
-    this->read_sound_api();
+    this->add_online_page(this->soundfx_api.get_next_page());
 }

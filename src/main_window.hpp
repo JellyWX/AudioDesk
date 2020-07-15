@@ -22,16 +22,21 @@ public:
     void set_application(AudioDesk* app);
 
     void clear_sound_box();
-    void clear_online_sound_box();
 
     void add_sound_button(const std::string &sound_name, const std::string &sound_path);
     void add_online_sound_button(const Sound& sound);
+
+private:
+    void search_query();
 
     void on_change_mic_volume(double new_volume);
 
     void on_change_volume(double new_volume);
 
-    void search_query();
+    void clear_online_sound_box();
+
+    void set_connected();
+    void set_disconnected();
 
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;

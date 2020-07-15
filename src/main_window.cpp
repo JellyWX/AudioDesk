@@ -45,6 +45,13 @@ void MainWindow::set_application(AudioDesk* app)
     this->search_button->signal_clicked().connect(
         sigc::mem_fun(*this, &MainWindow::search_query)
     );
+
+    this->audiodesk->soundfx_api.signal_connected().connect(
+        sigc::mem_fun(*this, &MainWindow::set_connected)
+    );
+    this->audiodesk->soundfx_api.signal_disconnected().connect(
+        sigc::mem_fun(*this, &MainWindow::set_disconnected)
+    );
 }
 
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)
@@ -104,5 +111,19 @@ void MainWindow::search_query()
 
     this->audiodesk->soundfx_api.set_query(query);
 
-    this->audiodesk->read_sound_api();
+    this->audiodesk->add_online_page(this->audiodesk->soundfx_api.get_current_page());
+}
+
+void MainWindow::set_connected()
+{
+    std::cout << "Received connection signal" << std::endl;
+
+    this->next_page->set_label("Load More...");
+}
+
+void MainWindow::set_disconnected()
+{
+    std::cout << "Received disconnection signal" << std::endl;
+
+    this->next_page->set_label("Disconnected. Retry connection...");
 }

@@ -15,6 +15,8 @@ std::vector<Sound> SoundFX_API::get_sounds(unsigned short page_number, const std
 
     cpr::Response api_response = cpr::Get(cpr::Url{full_url.str()});
 
+    this->set_connected(api_response.status_code > 0);
+
     if ( api_response.status_code == 200 )
     {
         Json::Value root;
@@ -55,10 +57,12 @@ std::string SoundFX_API::download_sound(unsigned int id)
 
     cpr::Response api_response = cpr::Get(cpr::Url{API_DOWNLOAD + "?sound_id=" + id_str});
 
+    this->set_connected(api_response.status_code > 0);
+
     if ( api_response.status_code == 200 )
     {
-        Json::Value root;
         Json::CharReaderBuilder builder;
+        Json::Value root;
         JSONCPP_STRING err;
 
         const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
@@ -101,19 +105,20 @@ std::string SoundFX_API::download_sound(unsigned int id)
     return path;
 }
 
-void SoundFX_API::next_page()
+std::vector<Sound> SoundFX_API::get_next_page()
 {
     if (this->current_page < this->max_page)
         ++this->current_page;
-}
 
-void SoundFX_API::prev_page()
-{
-    if (this->current_page > 0)
+    std::vector<Sound> sounds = this->get_sounds(this->current_page, this->query);
+
+    if ( sounds.empty() )
         --this->current_page;
+
+    return sounds;
 }
 
-std::vector<Sound> SoundFX_API::get_page()
+std::vector<Sound> SoundFX_API::get_current_page()
 {
     return this->get_sounds(this->current_page, this->query);
 }
@@ -127,4 +132,17 @@ void SoundFX_API::set_query(std::string new_query)
 
     this->current_page = 0;
     this->max_page = -1;
+}
+
+void SoundFX_API::set_connected(bool value)
+{
+    if (value != this->connected)
+    {
+        if (value)
+            this->m_signal_connected.emit();
+        else
+            this->m_signal_disconnected.emit();
+
+        this->connected = value;
+    }
 }
