@@ -35,7 +35,7 @@ void IniSection::add_entry(std::string new_name, std::string value)
     this->entries.emplace_back(IniEntry(std::move(new_name), std::move(value)));
 }
 
-IniEntry* IniSection::get_entry(const std::string& looking_for)
+std::optional<IniEntry*> IniSection::get_entry(const std::string& looking_for)
 {
     for (
         auto it = this->entries.begin();
@@ -49,7 +49,7 @@ IniEntry* IniSection::get_entry(const std::string& looking_for)
         }
     }
 
-    return nullptr;
+    return std::nullopt;
 }
 
 std::string IniFile::serialize()
@@ -182,13 +182,13 @@ void IniFile::add_entry(const std::string& section_name, const std::string& name
         this->add_section(section_name);
         this->get_last_section()->add_entry(name, value);
     }
-    else if (section->get_entry(name) == nullptr)
+    else if (auto entry = section->get_entry(name))
     {
-        section->add_entry(name, value);
+        entry.value()->set_value(value);
     }
     else
     {
-        section->get_entry(name)->set_value(value);
+        section->add_entry(name, value);
     }
 }
 
@@ -202,9 +202,15 @@ void IniFile::add_section(std::string name)
     this->sections.emplace_back(IniSection(std::move(name)));
 }
 
-std::string IniFile::get_value(const std::string& section, const std::string& name)
+std::optional<std::string> IniFile::get_value(const std::string& section, const std::string& name)
 {
-    return this->get_section(section)->get_entry(name)->get_value();
+    auto ini_section = this->get_section(section);
+
+    if (ini_section != nullptr)
+        if (auto entry = ini_section->get_entry(name))
+            return entry.value()->get_value();
+
+    return std::nullopt;
 }
 
 IniSection* IniFile::get_section(const std::string& name)

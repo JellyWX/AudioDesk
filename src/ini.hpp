@@ -7,6 +7,7 @@
 #include <string>
 #include <regex>
 #include <iostream>
+#include <optional>
 
 enum class FileLoadStatus
 {
@@ -49,7 +50,7 @@ public:
     void add_entry(const IniEntry& entry);
     void add_entry(std::string new_name, std::string value);
 
-    IniEntry* get_entry(const std::string& looking_for);
+    std::optional<IniEntry*> get_entry(const std::string& looking_for);
 
     std::string name;
 
@@ -63,7 +64,7 @@ public:
     explicit IniFile(std::string fpath, bool exists = true);
 
     std::string serialize();
-    
+
     FileLoadStatus deserialize_from_file();
     FileWriteStatus serialize_to_file();
 
@@ -72,7 +73,7 @@ public:
 
     void add_entry(const std::string& section, const std::string& name, const std::string& value);
 
-    std::string get_value(const std::string& section, const std::string& name);
+    std::optional<std::string> get_value(const std::string& section, const std::string& name);
 
     IniSection* get_section(const std::string& name);
 

@@ -78,21 +78,29 @@ void Setup::load_from_ini(DeviceQuerier* d_query)
             break;
 
         case FileLoadStatus::Success:
-            this->VOLUME = std::stod(this->conf_loader.get_value("Stream", "VOLUME"));
-            this->MIC_VOLUME = std::stod(this->conf_loader.get_value("Stream", "MIC_VOLUME"));
-            this->BITRATE = std::stoi(this->conf_loader.get_value("Stream", "BITRATE"));
-            this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED") == "true";
+            if (auto entry = this->conf_loader.get_value("Stream", "VOLUME"))
+                this->VOLUME = std::stod(entry.value());
 
-            std::string dd = this->conf_loader.get_value("Device", "DEFAULT");
+            if (auto entry = this->conf_loader.get_value("Stream", "MIC_VOLUME"))
+                this->MIC_VOLUME = std::stod(entry.value());
 
-            if (not d_query->device_exists(dd))
+            this->CACHE_ENABLED = this->conf_loader.get_value("Storage", "CACHE_ENABLED").value() == "true";
+
+            if (auto entry = this->conf_loader.get_value("API", "ROOT"))
+                this->API_ROOT = entry.value();
+            if (auto entry = this->conf_loader.get_value("API", "SEARCH"))
+                this->API_SEARCH = entry.value();
+            if (auto entry = this->conf_loader.get_value("API", "DOWNLOAD"))
+                this->API_DOWNLOAD = entry.value();
+
+            if (auto entry = this->conf_loader.get_value("Device", "DEFAULT"))
             {
-                this->DEFAULT_DEVICE = "";
+                std::string dd = entry.value();
+
+                if (d_query->device_exists(dd))
+                    this->DEFAULT_DEVICE = dd;
             }
-            else
-            {
-                this->DEFAULT_DEVICE = dd;
-            }
+
             break;
     }
 }
@@ -109,9 +117,12 @@ void Setup::save_to_ini()
     else
         this->conf_loader.add_entry("Storage", "CACHE_ENABLED", "false");
 
-    this->conf_loader.add_entry("Stream", "BITRATE", std::to_string(this->BITRATE));
     this->conf_loader.add_entry("Stream", "VOLUME", std::to_string(this->VOLUME));
     this->conf_loader.add_entry("Stream", "MIC_VOLUME", std::to_string(this->MIC_VOLUME));
+
+    this->conf_loader.add_entry("API", "ROOT", this->API_ROOT);
+    this->conf_loader.add_entry("API", "SEARCH", this->API_SEARCH);
+    this->conf_loader.add_entry("API", "DOWNLOAD", this->API_DOWNLOAD);
 
     FileWriteStatus fstatus = this->conf_loader.serialize_to_file();
 

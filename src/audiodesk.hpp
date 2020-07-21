@@ -29,7 +29,7 @@ public:
 
     Setup setup = Setup();
 
-    SoundFX_API soundfx_api = SoundFX_API();
+    SoundFX_API soundfx_api = SoundFX_API(setup);
 
     std::unordered_set<unsigned int> local_ids;
 

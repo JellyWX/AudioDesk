@@ -29,11 +29,14 @@ public:
 
     double VOLUME = 1.0;
     double MIC_VOLUME = 1.0;
-    int BITRATE = 36000;
 
     bool CACHE_ENABLED = true;
 
     std::string DEFAULT_DEVICE = "";
+
+    std::string API_ROOT = "http://localhost:5000/api";
+    std::string API_SEARCH = "/search";
+    std::string API_DOWNLOAD = "/sound";
 
     void save_to_ini();
 
