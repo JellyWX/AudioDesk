@@ -19,6 +19,8 @@ MainWindow::MainWindow(
 
     builder->get_widget("change_vol", this->volume_switch);
     builder->get_widget("change_mic", this->mic_volume_switch);
+
+    builder->get_widget("add_sound", this->add_sound);
 }
 
 void MainWindow::set_application(AudioDesk* app)
@@ -46,12 +48,33 @@ void MainWindow::set_application(AudioDesk* app)
         sigc::mem_fun(*this, &MainWindow::search_query)
     );
 
+    this->add_sound->signal_clicked().connect(
+        sigc::mem_fun(*this, &MainWindow::select_file)
+    );
+
     this->audiodesk->soundfx_api.signal_connected().connect(
         sigc::mem_fun(*this, &MainWindow::set_connected)
     );
     this->audiodesk->soundfx_api.signal_disconnected().connect(
         sigc::mem_fun(*this, &MainWindow::set_disconnected)
     );
+}
+
+void MainWindow::select_file()
+{
+    Gtk::FileChooserDialog dialog("Select a sound file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+
+    dialog.set_transient_for(*this);
+
+    dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+    dialog.add_button("Select", Gtk::RESPONSE_OK);
+
+    int result = dialog.run();
+
+    if (result == Gtk::RESPONSE_OK)
+    {
+        std::cout << "File selected: " << dialog.get_filename() << std::endl;
+    }
 }
 
 void MainWindow::add_sound_button(const std::string& sound_name, const std::string& sound_path)

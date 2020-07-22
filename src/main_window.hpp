@@ -38,6 +38,8 @@ private:
     void set_connected();
     void set_disconnected();
 
+    void select_file();
+
 private:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
@@ -55,4 +57,6 @@ private:
 
     Gtk::VolumeButton* volume_switch;
     Gtk::VolumeButton* mic_volume_switch;
+
+    Gtk::Button* add_sound;
 };

@@ -62,7 +62,7 @@
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">plus</property>
+                                <property name="label" translatable="yes">folder-plus</property>
                                 <style>
                                   <class name="black-font"/>
                                   <class name="fa"/>
